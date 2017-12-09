@@ -26,15 +26,9 @@
                              if(isset($_GET['guest'])) {
                               $checkname = $_GET['guest'];
                               $vdel = 0;
-                              $vlist = 0;
-                             } elseif($_GET['artist']) {
-                              $checkname = $_GET['guest'];
-                              $vdel = 0;
-                              $vlist = 1;
-                            } else {
+                             } else {
                               $checkname = $_GET['user'];
                               $vdel = 1;
-                              $vlist = 0;
                             }
 
                              if(isset($_GET['delete'])) {
