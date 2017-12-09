@@ -22,6 +22,15 @@
 </head>
 <body>
   <?php
+
+                             if(isset($_GET['guest'])) {
+                              $checkname = $_GET['guest'];
+                              $vdel = 0;
+                             } else {
+                              $checkname = $_GET['user'];
+                              $vdel = 1;
+                            }
+
                              if(isset($_GET['delete'])) {
                                   $Username = $_GET["user"];
                                   $delete = $_GET['delete'];
@@ -122,7 +131,7 @@
                         <h3>
                           <?php
                             $Username = $_GET["user"];
-                            echo $Username;
+                            echo $checkname;
                           ?>
                         </h3>
                     </div>
@@ -138,7 +147,7 @@
                         }
                          $sql1 = "SELECT count(*) as num
                                   FROM follows
-                                  WHERE follower = '$Username'";
+                                  WHERE follower = '$checkname'";
                          $result1 = $conn->query($sql1);
                         while($row=mysqli_fetch_array($result1))
                         {
@@ -147,6 +156,8 @@
                         echo "Following:".$cid;
                         ?>
                       </div>
+
+
                         <div class="user-pad">
                           <?php 
                         include 'databases.php';
@@ -159,7 +170,7 @@
                         }
                          $sql1 = "SELECT count(*) as num
                                   FROM follows
-                                  WHERE followee = '$Username'";
+                                  WHERE followee = '$checkname'";
                          $result1 = $conn->query($sql1);
                         while($row=mysqli_fetch_array($result1))
                         {
@@ -168,10 +179,11 @@
                         echo "Follower:".$cid;
                         ?>
                         </div>
+
+
                         <div class="user-pad">
                           <?php 
                         include 'databases.php';
-
                         // Craete connection
                         $conn = new mysqli($servername, $username, $password, $dbname);
                         // Check connection
@@ -180,7 +192,7 @@
                         }
                          $sql1 = "SELECT count(*) as num
                                   FROM likes
-                                  WHERE username = '$Username'";
+                                  WHERE username = '$checkname'";
                          $result1 = $conn->query($sql1);
                         while($row=mysqli_fetch_array($result1))
                         {
@@ -189,6 +201,8 @@
                         echo "likes:".$cid;
                         ?>
                         </div>
+
+
                     </div>
                 <div class="col-md-6 no-pad">
                     <div class="user-image">
@@ -200,13 +214,22 @@
                 
       </div>
 
-    <?php echo'<form action="playlist.php?user='.$Username.'" method="post">'; ?>
+    <?php
+    if ($vdel == 1) {
+          echo'<form action="playlist.php?user='.$Username.'" method="post">'; 
+        } 
+    ?>
 
     <div class="chk-all">
       <input type="checkbox" id="checkAll" />
         <div class="btn-group">
           <a data-toggle="dropdown"  class="btn mini all" aria-expanded="false" id="checkAll">All</a>
-          <button type="button" class="btn btn-danger" style="visibility: hidden;" id="unfollowAll">Delete Checked</button>
+          <?php
+          if ($vdel == 1) {
+          echo'<button type="button" class="btn btn-danger" style="visibility: hidden;" id="unfollowAll">Delete Checked</button>'; 
+          } 
+          ?>
+          
           
             </div>
                              </div>
@@ -236,9 +259,9 @@
                               }
                              }
                              $conn = new mysqli($servername, $username, $password, $dbname);
-                                  $sql1 = "SELECT playlist.ptitle,playlist.releasedate,playlist.Authorization
+                                  $sql1 = "SELECT playlist.ptitle,playlist.releasedate,playlist.Authorization,playlist.playlistid
                                            FROM playlist
-                                           WHERE playlist.username='$Username'";
+                                           WHERE playlist.username='$checkname'";
                                   $result1 = $conn->query($sql1);
                                   $numrow = 1;
                                   while($row = $result1->fetch_assoc())
@@ -251,9 +274,11 @@
                                       <td class="view-message  dont-show"> <a href="myplaylist.php?user='.$Username.'&playlistid='.$row["playlistid"].'">'.$row["ptitle"].'</a></td>
                                       <td class="view-message  text-right">'.$row["releasedate"].'</td>
                                       <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
-                                      <td>
-                                      <a href="playlist.php?user='.$Username.'&delete='.$row["playlistid"].'"><button type="button" class="btn btn-danger">Delete</button></a></td>
-                                          </tr>';
+                                      <td>';
+                                      if ($vdel==1){
+                                        echo '<a href="playlist.php?user='.$Username.'&delete='.$row["playlistid"].'"><button type="button" class="btn btn-danger">Delete</button></a></td>';
+                                      }
+                                    echo '</tr>';
                                    $numrow++;
                                  }
                               ?>
