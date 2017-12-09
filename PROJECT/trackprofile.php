@@ -30,6 +30,21 @@
   -webkit-transform: translate(-50%,-50%)
   
 }
+#addToPlayListFrom { 
+  display: none;
+
+  border: 6px solid salmon; 
+  padding: 2em;
+  width: 400px;
+  text-align: center;
+  background: #fff;
+  position: fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%)
+  
+}
 </style>
 </head>
 <body>
@@ -138,14 +153,26 @@
                               alert("Rating Success!");
                               </script>';
                             }
-                            else
-                            {
-                              echo '<script type="text/javascript">
-                              alert("Rating Fail!");
-                              </script>';                            
-                            }
 
                           }
+                          $addList="";
+                          if(isset($_POST["addList"]))
+                          {
+                          	$addList=$_POST["addList"];
+							$sql000="INSERT INTO `playlisttrack` (`playlistid`, `trackid`, `order`) VALUES ((SELECT playlist.playlistID from playlist WHERE playlist.ptitle='$addList'), '$trackID', CURRENT_DATE())";
+                            $result000=mysqli_query($dbConnected,$sql000);
+                            if($result000){
+							 echo '<script type="text/javascript">
+                              alert("Add Success!");
+                              </script>';
+                            }
+                            else
+                            {
+							echo '<script type="text/javascript">
+                              alert("The track has already in your playlist '.$addList.'!");
+                              </script>';
+                            }
+	                      }
                           $sql0 = "SELECT ttitle
                                   From track
                                   WHERE trackID = '$trackID'";
@@ -246,7 +273,25 @@
                           }
                           ?></h4>
                           <h4 class="white"><i class="fa fa-check-circle-o"></i>
-                            
+							<button type="button" class="btn btn-success" id="addToPlayList">Add to My Playlist</button>
+							<script type="text/javascript">
+								$(function() {
+								  // contact form animations
+								  $('#addToPlayList').click(function() {
+								    $('#addToPlayListFrom').fadeToggle();
+								  })
+								  $(document).mouseup(function (e) {
+								    var container = $("#addToPlayListFrom");
+
+								    if (!container.is(e.target) // if the target of the click isn't the container...
+								        && container.has(e.target).length === 0) // ... nor a descendant of the container
+								    {
+								        container.fadeOut();
+								    }
+								  });
+								  
+								});
+							</script>                        
                           </h4>
                     </div>
                 </div>
@@ -319,6 +364,25 @@
   <p>
     <input class="btn btn-outline-warning my-2 my-sm-0" name="1" type="submit" value="Bad">
     </p>
+  </form>
+</div>
+<div id="addToPlayListFrom">
+<?php
+  $Username = $_GET["user"];
+  $trackID=$_GET["track"];
+
+  echo '<form action="./trackprofile.php?user='.$Username.'&track='.$trackID.'" method="post">';
+  ?>
+
+  <h3>Which playlist would you like to add?</h3>
+  <?php
+  $sql4="SELECT * FROM playlist where Username='$Username'";
+  $result4=mysqli_query($dbConnected,$sql4);
+	while($row=mysqli_fetch_array($result4))
+	{
+			echo '<p><input class="btn btn-outline-primary my-2 my-sm-0" name="addList" type="submit" value="'.$row["ptitle"].'"></p>';
+	}
+	?>
   </form>
 </div>
 <!-- Popup Div Ends Here -->
