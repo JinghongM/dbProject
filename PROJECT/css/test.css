@@ -1,140 +1,111 @@
-/*    --------------------------------------------------
-	:: General
-	-------------------------------------------------- */
 body {
-	font-family: 'Open Sans', sans-serif;
-	color: #353535;
-}
-.content h1 {
-	text-align: center;
-}
-.content .content-footer p {
-	color: #6d6d6d;
-    font-size: 12px;
-    text-align: center;
-}
-.content .content-footer p a {
-	color: inherit;
-	font-weight: bold;
+  margin-top: 50px;
+  font-family: sans-serif;
+  background: #f1f1f1;
 }
 
-/*	--------------------------------------------------
-	:: Table Filter
-	-------------------------------------------------- */
-.panel {
-	border: 1px solid #ddd;
-	background-color: #fcfcfc;
+table {
+  margin: 0 auto;
+  text-align: center;
+  border-collapse: collapse;
+  border: 1px solid #d4d4d4;
+  font-size: 20px;
+  background: #fff;
 }
-.panel .btn-group {
-	margin: 15px 0 30px;
+
+table th, 
+table tr:nth-child(2n+2) {
+  background: #e7e7e7;
 }
-.panel .btn-group .btn {
-	transition: background-color .3s ease;
+ 
+table th, 
+table td {
+  padding: 20px 50px;
 }
-.table-filter {
-	background-color: #fff;
-	border-bottom: 1px solid #eee;
+ 
+table th {
+  border-bottom: 1px solid #d4d4d4;
+}     
+
+.stars-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
 }
-.table-filter tbody tr:hover {
-	cursor: pointer;
-	background-color: #eee;
+
+.stars-outer::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
 }
-.table-filter tbody tr td {
-	padding: 10px;
-	vertical-align: middle;
-	border-top-color: #eee;
+
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
 }
-.table-filter tbody tr.selected td {
-	background-color: #eee;
+
+.stars-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
 }
-.table-filter tr td:first-child {
-	width: 38px;
+
+.attribution {
+  font-size: 12px;
+  color: #444;
+  text-decoration: none;
+  text-align: center;
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  z-index: -1;
 }
-.table-filter tr td:nth-child(2) {
-	width: 35px;
+.attribution:hover {
+  color: #1fa67a;
 }
-.ckbox {
-	position: relative;
+table {
+  margin: 0 auto;
+  text-align: center;
+  border-collapse: collapse;
+  border: 1px solid #d4d4d4;
+  font-size: 20px;
+  background: #fff;
 }
-.ckbox input[type="checkbox"] {
-	opacity: 0;
+ 
+table th, 
+table tr:nth-child(2n+2) {
+  background: #e7e7e7;
 }
-.ckbox label {
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+  
+table th, 
+table td {
+  padding: 20px 50px;
 }
-.ckbox label:before {
-	content: '';
-	top: 1px;
-	left: 0;
-	width: 18px;
-	height: 18px;
-	display: block;
-	position: absolute;
-	border-radius: 2px;
-	border: 1px solid #bbb;
-	background-color: #fff;
+  
+table th {
+ border-bottom: 1px solid #d4d4d4;
 }
-.ckbox input[type="checkbox"]:checked + label:before {
-	border-color: #2BBCDE;
-	background-color: #2BBCDE;
+.stars-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
 }
-.ckbox input[type="checkbox"]:checked + label:after {
-	top: 3px;
-	left: 3.5px;
-	content: '\e013';
-	color: #fff;
-	font-size: 11px;
-	font-family: 'Glyphicons Halflings';
-	position: absolute;
+ 
+.stars-outer::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
 }
-.table-filter .star {
-	color: #ccc;
-	text-align: center;
-	display: block;
+ 
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
 }
-.table-filter .star.star-checked {
-	color: #F0AD4E;
-}
-.table-filter .star:hover {
-	color: #ccc;
-}
-.table-filter .star.star-checked:hover {
-	color: #F0AD4E;
-}
-.table-filter .media-photo {
-	width: 35px;
-}
-.table-filter .media-body {
-    display: block;
-    /* Had to use this style to force the div to expand (wasn't necessary with my bootstrap version 3.3.6) */
-}
-.table-filter .media-meta {
-	font-size: 11px;
-	color: #999;
-}
-.table-filter .media .title {
-	color: #2BBCDE;
-	font-size: 14px;
-	font-weight: bold;
-	line-height: normal;
-	margin: 0;
-}
-.table-filter .media .title span {
-	font-size: .8em;
-	margin-right: 20px;
-}
-.table-filter .media .title span.pagado {
-	color: #5cb85c;
-}
-.table-filter .media .title span.pendiente {
-	color: #f0ad4e;
-}
-.table-filter .media .title span.cancelado {
-	color: #d9534f;
-}
-.table-filter .media .summary {
-	font-size: 14px;
+ 
+.stars-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
 }

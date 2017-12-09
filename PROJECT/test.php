@@ -1,46 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/test.css">
+	<title></title>
 </head>
 <body>
-<table border="1" id="tableA">
+<table>
+ <thead>
     <tr>
-        <td>cell 1</td>
-        <td>cell 2</td>
+      <th>Hotel</th>
+      <th>Rating</th>
     </tr>
-    <tr>
-        <td>cell 3</td>
-        <td>cell 4</td>
+  </thead>
+  <tbody>
+    <tr class="hotel-a">
+      <td>Hotel A</td>
+      <td>
+        <div class="stars-outer">
+          <div class="stars-inner"></div>
+        </div>
+      </td>
     </tr>
+    <tr class="hotel-b">
+      <td>Hotel B</td>
+      <td>
+        <div class="stars-outer">
+          <div class="stars-inner"></div>
+        </div>
+      </td>
+    </tr>
+ 
+    <!-- 3 more rows here -->
+     
+  </tbody>
 </table>
-<table border="1" id="tableB">
-    <tr>
-        <td>cell 5</td>
-        <td>cell 6</td>
-    </tr>
-    <tr>
-        <td>cell 7</td>
-        <td>cell 8</td>
-    </tr>
-</table>
-<input type="button" id="showTableA" value="Table A">
-<input type="button" id="showTableB" value="Table B">
-<script type="text/javascript">
-    var tableA = document.getElementById("tableA");
-var tableB = document.getElementById("tableB");
-
-var btnTabA = document.getElementById("showTableA");
-var btnTabB = document.getElementById("showTableB");
-
-btnTabA.onclick = function () {
-    tableA.style.display = "table";
-    tableB.style.display = "none";
-}
-btnTabB.onclick = function () {
-    tableA.style.display = "none";
-    tableB.style.display = "table";
-}
-</script>
 </body>
 </html>

@@ -82,7 +82,7 @@
 <main role="main">
 <div style="background:transparent" class="jumbotron">
         <div class="container">
-           <div class="row user-menu-container square">
+          <div class="row user-menu-container square">
           <div class="row coralbg white">
                 <div class="col-md-6 no-pad">
                     <div class="user-pad">
@@ -169,6 +169,7 @@
                 </div>
             </div>
         </div>
+      </div>
         <div class="row overview">
                 
                 <div class="col-md-3 user-pad text-center">
