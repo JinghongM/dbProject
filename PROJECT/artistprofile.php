@@ -84,27 +84,63 @@
                     <div class="user-pad">
                         <h3> 
                           <?php
+                          include "databases.php";
+                          $dbConnected = @mysqli_connect($servername,$username,$password);
+                          $dbSelected = @mysqli_select_db($dbConnected,$dbname);
+                            $checkName = $_GET["artist"];
+                            /*INSERTTTTTTTTTTTTTTTTTTT*/                      
+                            if(isset($_POST['likeArtist']))
+                            {
+		                          $sql0 = "INSERT INTO `likes` (`username`, `artistID`, `timestamp`) VALUES ('".$_GET['user']."','".$_GET['artist']."'".",CURRENT_TIME())";
+                          		  $result0=mysqli_query($dbConnected,$sql0);
+                          		  if($result0)
+                          		  {
+                          		  	echo '<script type="text/javascript">
+                              			alert("Like Success!");
+                              			</script>';
+                          		  }
+                          		  else
+                          		  {
+                          		  	echo '<script type="text/javascript">
+                              			alert("This artist has already in your like list!");
+                              			</script>';
+                          		  }
 
-                            echo $_GET["artist"];
-                            $checkName = $_GET["artist"];                          
+                            }
+                                                        /*INSERTTTTTTTTTTTTTTTTTTT*/                      
 
                           ?>
                         </h3>
-                        <h4 class="white"><i class="fa fa-check-circle-o"></i>
+                        <h4 class="white">
+                        	<i class="fa fa-check-circle-o"></i>
 
                           <?php
                           include "databases.php";
                           $dbConnected = @mysqli_connect($servername,$username,$password);
                           $dbSelected = @mysqli_select_db($dbConnected,$dbname);
-                          $sql1 = "SELECT description
+                          $sql1 = "SELECT aname,description
                                   From artist
-                                  WHERE aname = '$checkName'";
+                                  WHERE artistID = '$checkName'";
                           $result1=mysqli_query($dbConnected,$sql1);
                           while($row=mysqli_fetch_array($result1)){
+                          	$artist = $row["aname"];
                             $description = $row["description"];
-                            echo $description;
+                            echo '<div><h3>'.$artist.'</h3></div>';
+                            echo '<div><h3>'.$description.'</h3></div>';
                           }
-                          ?></h4>
+                          ?>	
+                          <!-- 																	BUTTON!!!											 -->
+                      </h4>
+                         <h4 class="white"><i class="fa fa-check-circle-o"></i>
+                         	<?php
+                         	echo '<form action="./artistprofile.php?user='.$Username.'&artist='.$checkName.'" method="post">
+                         		<input type="hidden" name="likeArtist" value="'.$checkName.'">';
+                         		?>
+                         		<button type="submit" class="btn btn-success" id="addToLike">Like</button>
+                         	</form>
+							</h4>
+                          <!-- 																	BUTTON!!!											 -->
+
                     </div>
                 </div>
                 <div class="col-md-6 no-pad">
