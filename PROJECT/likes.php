@@ -248,7 +248,7 @@
                                         <input name="selector[]" type="hidden" class="mail-checkbox" value="'.$row["artistID"].'" />
                                       </td>
                                       <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                      <td class="view-message  dont-show"><a href="artistprofile.php?user='.$Username.'&artist='.$row["aname"].'">'.$row["aname"].'</a></td>
+                                      <td class="view-message  dont-show"><a href="artistprofile.php?user='.$Username.'&artist='.$row["artistID"].'">'.$row["aname"].'</a></td>
                                       <td class="view-message  text-right">'.$row["description"].'</td>
                                       <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
                                       <td class="view-message ">'.$row["timestamp"].'</td>
@@ -260,7 +260,7 @@
                                         <input name="selector[]" type="checkbox" class="mail-checkbox" value="'.$row["artistID"].'" />
                                       </td>
                                       <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                      <td class="view-message  dont-show"><a href="artistprofile.php?user='.$Username.'&artist='.$row["aname"].'">'.$row["aname"].'</a></td>
+                                      <td class="view-message  dont-show"><a href="artistprofile.php?user='.$Username.'&artist='.$row["artistID"].'">'.$row["aname"].'</a></td>
                                       <td class="view-message  text-right">'.$row["description"].'</td>
                                       <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
                                       <td class="view-message ">'.$row["timestamp"].'</td>
