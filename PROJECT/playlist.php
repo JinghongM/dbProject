@@ -21,8 +21,34 @@
 
 </head>
 <body>
+  <?php
+                             if(isset($_GET['delete'])) {
+                                  $Username = $_GET["user"];
+                                  $delete = $_GET['delete'];
+                                  include 'databases.php';
+                                  $conn = new mysqli($servername, $username, $password, $dbname);
+                                  $sql1 = "DELETE FROM playlisttrack WHERE playlistid='$delete'";
+                                  $sql2 = "DELETE FROM playlist WHERE playlistID='$delete'";
+                                  $conn->query($sql1);
+                                  $conn->query($sql2);
 
- <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+                             }
+
+                             if(isset($_POST['submit'])){
+                                  $array = $_POST['selector'];
+                                  $Username = $_GET["user"];
+                                  include 'databases.php';
+                                  $conn = new mysqli($servername, $username, $password, $dbname);
+                                  foreach ($array as $delete) {
+                                    $sql1 = "DELETE FROM playlisttrack WHERE playlistid='$delete'";
+                                    $sql2 = "DELETE FROM playlist WHERE playlistID='$delete'";
+                                    $conn->query($sql1);
+                                    $conn->query($sql2);
+                                  }
+                             }            
+?>
+
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
      <?php
         $Username = $_GET["user"];
         echo '<a class="navbar-brand" href="welcome.php?user='.$Username.'">Spotify</a>';
@@ -36,8 +62,7 @@
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" style="color:blue;" href="profile.php?user='.$Username.'">Profiles<span class="sr-only">(current)</span></a>';
-
+             echo '<a class="nav-link" href="profile.php?user='.$Username.'">Profiles<span class="sr-only">(current)</span></a>';
              ?>
              
 <!--             <a class="nav-link" href="profile.php">Profiles<span class="sr-only">(current)</span></a>
@@ -45,8 +70,7 @@
           <li class="nav-item active">
                         <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" style="color:red;" href="following.php?user='.$Username.'">Following<span class="sr-only">(current)</span></a>';
-
+             echo '<a class="nav-link" href="following.php?user='.$Username.'">Following<span class="sr-only">(current)</span></a>';
              ?>
              <!-- 
             <a class="nav-link" href="Follows.html">Following<span class="sr-only">(current)</span></a> -->
@@ -54,35 +78,38 @@
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" style="color:green;" href="followee.php?user='.$Username.'">Follower<span class="sr-only">(current)</span></a>';
-
+             echo '<a class="nav-link" href="followee.php?user='.$Username.'">Follower<span class="sr-only">(current)</span></a>';
              ?>
           </li>
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" style="color:yellow;" href="likes.php?user='.$Username.'">Likes<span class="sr-only">(current)</span></a>';
-
+             echo '<a class="nav-link" href="likes.php?user='.$Username.'">Artists<span class="sr-only">(current)</span></a>';
              ?>
           </li>
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" style="color:grey;" href="playlist.php?user='.$Username.'">Playlists<span class="sr-only">(current)</span></a>';
-
+             echo '<a class="nav-link" href="playlist.php?user='.$Username.'">Playlists<span class="sr-only">(current)</span></a>';
              ?>
           </li>
+          <!-- <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Playlists</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </li>
+        </ul> -->
       </ul>
-
-      <form class="form-inline my-2 my-lg-0" action="./search.php" method="get">';
-          <?php
-          echo '<input type="hidden" name=user value='.$Username.'>';
-          ?>
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" name="searchKey" aria-label="Search">
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>
     </nav>
+
 
     
     <main role="main">
@@ -101,15 +128,10 @@
                     </div>
                     <div class="user-pad">
                       <?php 
-
-                        $servername = "localhost";
-                        $username = "root";
-                        $password = "";
-                        $dbname = "spotify";
+                        include 'databases.php';
 
                         // Craete connection
                         $conn = new mysqli($servername, $username, $password, $dbname);
-
                         // Check connection
                         if ($conn->connect_error) {
                             die("Connection failed: " . $conn->connect_error);
@@ -127,15 +149,10 @@
                       </div>
                         <div class="user-pad">
                           <?php 
-
-                        $servername = "localhost";
-                        $username = "root";
-                        $password = "";
-                        $dbname = "spotify";
+                        include 'databases.php';
 
                         // Craete connection
                         $conn = new mysqli($servername, $username, $password, $dbname);
-
                         // Check connection
                         if ($conn->connect_error) {
                             die("Connection failed: " . $conn->connect_error);
@@ -153,15 +170,10 @@
                         </div>
                         <div class="user-pad">
                           <?php 
-
-                        $servername = "localhost";
-                        $username = "root";
-                        $password = "";
-                        $dbname = "spotify";
+                        include 'databases.php';
 
                         // Craete connection
                         $conn = new mysqli($servername, $username, $password, $dbname);
-
                         // Check connection
                         if ($conn->connect_error) {
                             die("Connection failed: " . $conn->connect_error);
@@ -187,6 +199,9 @@
         </div>
                 
       </div>
+
+    <?php echo'<form action="playlist.php?user='.$Username.'" method="post">'; ?>
+
     <div class="chk-all">
       <input type="checkbox" id="checkAll" />
         <div class="btn-group">
@@ -230,14 +245,14 @@
                                   {
                                     echo '<tr>
                                       <td class="inbox-small-cells">
-                                        <input type="checkbox" class="mail-checkbox" value='.$row["ptitle"].'>
+                                        <input name="selector[]" type="checkbox" class="mail-checkbox" value="'.$row["playlistid"].'" />
                                       </td>
                                       <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                      <td class="view-message  dont-show">'.$row["ptitle"].'</td>
+                                      <td class="view-message  dont-show"> <a href="myplaylist.php?user='.$Username.'&playlistid='.$row["playlistid"].'">'.$row["ptitle"].'</a></td>
                                       <td class="view-message  text-right">'.$row["releasedate"].'</td>
                                       <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
-                                      <td><button type="button" class="btn btn-warning" style="margin:10px;">Edit</button>
-                                      <button type="button" class="btn btn-danger">Delete</button></td>
+                                      <td>
+                                      <a href="playlist.php?user='.$Username.'&delete='.$row["playlistid"].'"><button type="button" class="btn btn-danger">Delete</button></a></td>
                                           </tr>';
                                    $numrow++;
                                  }
@@ -256,21 +271,25 @@ $('#checkAll').change(function() {
    if ( ! this.checked) {
         $("#unfollowAll").css("visibility","hidden")
    }
-
 });
 $(".mail-checkbox").change(function(){
     if ($('.mail-checkbox:checked')) {
        //do something
          $("#unfollowAll").css("visibility","visible")
-
     }
     if ($('.mail-checkbox:checked').length ==0)
     {
         $("#unfollowAll").css("visibility","hidden")
-
     }
 });
-
+$(function(){
+      $('#unfollowAll').click(function(){
+        var val = [];
+        $(':checkbox:checked').each(function(i){
+          val[i] = $(this).val();
+        });
+      });
+    });
 </script>
 </body>
 </html>
