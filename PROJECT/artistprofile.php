@@ -113,7 +113,7 @@
                     <h3>Track</h3>
                     <h4>
                       <?php
-                      echo '<a href="./myplaylist.php?user='.$Username.'&guest='.$_GET["guest"].'">';
+                      echo '<a href="./myplaylist.php?user='.$Username.'&artist='.$_GET["artist"].'">';
                       $sql2 = "SELECT count(*) as count
                                   From track,artist
                                   WHERE artist.aname = '$checkName' and artist.artistID=track.artistID";
