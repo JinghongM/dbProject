@@ -28,7 +28,6 @@
             <?php
              $Username = $_GET["user"];
              echo '<a class="nav-link" href="profile.php?user='.$Username.'">Profiles<span class="sr-only">(current)</span></a>';
-
              ?>
              
 <!--             <a class="nav-link" href="profile.php">Profiles<span class="sr-only">(current)</span></a>
@@ -37,7 +36,6 @@
                         <?php
              $Username = $_GET["user"];
              echo '<a class="nav-link" href="following.php?user='.$Username.'">Following<span class="sr-only">(current)</span></a>';
-
              ?>
              <!-- 
             <a class="nav-link" href="Follows.html">Following<span class="sr-only">(current)</span></a> -->
@@ -46,21 +44,18 @@
             <?php
              $Username = $_GET["user"];
              echo '<a class="nav-link" href="followee.php?user='.$Username.'">Follower<span class="sr-only">(current)</span></a>';
-
              ?>
           </li>
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
              echo '<a class="nav-link" href="likes.php?user='.$Username.'">Artists<span class="sr-only">(current)</span></a>';
-
              ?>
           </li>
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
              echo '<a class="nav-link" href="playlist.php?user='.$Username.'">Playlists<span class="sr-only">(current)</span></a>';
-
              ?>
           </li>
       </ul>
@@ -84,10 +79,8 @@
                     <div class="user-pad">
                         <h3> 
                           <?php
-
                             echo $_GET["artist"];
-                            $checkName = $_GET["artist"];                          
-
+                            $checkName = $_GET["artist"];                        
                           ?>
                         </h3>
                         <h4 class="white"><i class="fa fa-check-circle-o"></i>
@@ -109,7 +102,7 @@
                 </div>
                 <div class="col-md-6 no-pad">
                     <div class="user-image">
-                        <img src="./images/musician.jpg" class="img-responsive thumbnail">
+                        <img src="https://farm7.staticflickr.com/6163/6195546981_200e87ddaf_b.jpg" class="img-responsive thumbnail">
                     </div>
                 </div>
             </div>
@@ -120,6 +113,7 @@
                     <h3>Track</h3>
                     <h4>
                       <?php
+                      echo '<a href="./myplaylist.php?user='.$Username.'&guest='.$_GET["guest"].'">';
                       $sql2 = "SELECT count(*) as count
                                   From track,artist
                                   WHERE artist.aname = '$checkName' and artist.artistID=track.artistID";
@@ -130,14 +124,15 @@
                             
                           }
                           echo $trackNumber;
-
                     ?>
+                    </a>
                     </h4>
                 </div>
                 <div class="col-md-3 user-pad text-center">
-                    <h3>Liked</h3>
+                    <h3>Follower</h3>
                     <h4>
                       <?php
+                      echo '<a href="./followee.php?user='.$Username.'&guest='.$_GET["guest"].'">';
                       $sql3 = "SELECT count(*) as count
                                   From likes,artist
                                   WHERE artist.aname = '$checkName' and likes.artistID=artist.artistID";
@@ -148,9 +143,8 @@
                             
                           }
                           echo $likedNumber;
-
                     ?>
-                      
+                    </a>  
                     </h4>
                 </div>
                 
