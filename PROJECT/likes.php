@@ -22,10 +22,19 @@
 </head>
 <body>
   <?php
+                            include './databases.php';
+
+                            if(isset($_GET['guest']))
+                            {
+                              $checkName=$_GET['guest'];
+                            }
+                            else
+                            {
+                              $checkName=$_GET['user'];
+                            }
                              if(isset($_GET['unlike'])) {
                               $Username = $_GET["user"];
                               $unlike = $_GET['unlike'];
-                              include './databases.php';
                               $conn = new mysqli($servername, $username, $password, $dbname);
                               $sql1 = "DELETE FROM likes
                                        WHERE username='$Username'and artistID='$unlike'";
@@ -117,8 +126,7 @@
                     <div class="user-pad">
                         <h3>
                           <?php
-                            $Username = $_GET["user"];
-                            echo $Username;
+                            echo $checkName;
                           ?>
                         </h3>
                     </div>
@@ -135,7 +143,7 @@
                         }
                          $sql1 = "SELECT count(*) as num
                                   FROM follows
-                                  WHERE follower = '$Username'";
+                                  WHERE follower = '$checkName'";
                          $result1 = $conn->query($sql1);
                         while($row=mysqli_fetch_array($result1))
                         {
@@ -156,7 +164,7 @@
                         }
                          $sql1 = "SELECT count(*) as num
                                   FROM follows
-                                  WHERE followee = '$Username'";
+                                  WHERE followee = '$checkName'";
                          $result1 = $conn->query($sql1);
                         while($row=mysqli_fetch_array($result1))
                         {
@@ -176,7 +184,7 @@
                         }
                          $sql1 = "SELECT count(*) as num
                                   FROM likes
-                                  WHERE username = '$Username'";
+                                  WHERE username = '$checkName'";
                          $result1 = $conn->query($sql1);
                         while($row=mysqli_fetch_array($result1))
                         {
@@ -195,14 +203,20 @@
         </div>
                 
       </div>
-    <?php echo'<form action="likes.php?user='.$Username.'" method="post">'; ?>
-
-    <div class="chk-all">
+    <?php echo'<form action="likes.php?user='.$Username.'" method="post">';
+     if(!isset($_GET['guest'])){
+    echo '<div class="chk-all">
       <input type="checkbox" id="checkAll" />
-        <div class="btn-group">
-          <a data-toggle="dropdown"  class="btn mini all" aria-expanded="false" id="checkAll">All</a>
-  
-  <button type="submit" class="btn btn-danger" style="visibility: hidden;" id="unfollowAll" name="submit" value="Unfollow Checked">Unsubscribe selected</button>
+        <div class="btn-group">';
+}
+
+             if(! isset($_GET['guest']))
+             {
+            echo '<a data-toggle="dropdown"  class="btn mini all" aria-expanded="false" id="checkAll">All</a>
+
+            <button type="submit" class="btn btn-danger" style="visibility: hidden;" id="unfollowAll" name="submit" value="Unfollow Checked">Unsubscribe selected</button>';
+            }
+  ?>
             </div>
                              </div>
                            <table class="table table-inbox table-hover">
@@ -222,11 +236,25 @@
                              $conn = new mysqli($servername, $username, $password, $dbname);
                                   $sql1 = "SELECT artist.aname, likes.timestamp, artist.description, artist.artistID
                                            FROM likes,artist
-                                           WHERE likes.username='$Username' and likes.artistID=artist.artistID";
+                                           WHERE likes.username='$checkName' and likes.artistID=artist.artistID";
                                   $result1 = $conn->query($sql1);
                                   $numrow = 1;
                                   while($row = $result1->fetch_assoc())
                                   {
+                                    if(isset($_GET['guest']))
+                                    {
+                                      echo '<tr>
+                                      <td class="inbox-small-cells">
+                                        <input name="selector[]" type="hidden" class="mail-checkbox" value="'.$row["artistID"].'" />
+                                      </td>
+                                      <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
+                                      <td class="view-message  dont-show"><a href="artistprofile.php?user='.$Username.'&artist='.$row["aname"].'">'.$row["aname"].'</a></td>
+                                      <td class="view-message  text-right">'.$row["description"].'</td>
+                                      <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
+                                      <td class="view-message ">'.$row["timestamp"].'</td>
+                                          </tr>';}
+                                    else
+                                    {
                                     echo '<tr>
                                       <td class="inbox-small-cells">
                                         <input name="selector[]" type="checkbox" class="mail-checkbox" value="'.$row["artistID"].'" />
@@ -236,10 +264,11 @@
                                       <td class="view-message  text-right">'.$row["description"].'</td>
                                       <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
                                       <td class="view-message ">'.$row["timestamp"].'</td>
-
-                                      <td><a href="likes.php?user='.$Username.'&unlike='.$row["artistID"].'"><button type="button" class="btn btn-danger">Unsubscribe</button></a></td>
+                                      <td>
+                                      <a href="likes.php?user='.$Username.'&unlike='.$row["artistID"].'"><button type="button" class="btn btn-danger">Unsubscribe</button></a></td>
 
                                           </tr>';
+                                    }
                                    $numrow++;
                                  }
                               ?>
