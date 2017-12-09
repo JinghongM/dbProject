@@ -21,7 +21,6 @@
     </style>
   </head>
   <body>
-
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 	   <?php
         $Username = $_GET["user"];
@@ -73,8 +72,12 @@
              ?>
           </li>
       </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+
+      <form class="form-inline my-2 my-lg-0" action="./search.php" method="get">';
+          <?php
+          echo '<input type="hidden" name=user value='.$Username.'>';
+          ?>
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" name="searchKey" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>
