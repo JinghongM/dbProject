@@ -9,8 +9,28 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link rel="stylesheet" href="css/profile.css">
     <script src="./jquery/jquery.min.js"></script> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--     <link rel="stylesheet" type="text/css" href="./css/test.css">
+ --><style>
+    .checked {
+    color: orange;
+      }
+  #contactForm { 
+  display: none;
 
-
+  border: 6px solid salmon; 
+  padding: 2em;
+  width: 400px;
+  text-align: center;
+  background: #fff;
+  position: fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%)
+  
+}
+</style>
 </head>
 <body>
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -84,9 +104,48 @@
                         <h3> 
                           <?php
                           include "databases.php";
-                          $trackID=$_GET["track"];
                           $dbConnected = @mysqli_connect($servername,$username,$password);
                           $dbSelected = @mysqli_select_db($dbConnected,$dbname);
+                          $rating="";
+                            if(isset($_POST['5']))
+                            {
+                              $rating=5;
+                            }
+                            if(isset($_POST['4']))
+                            {
+                              $rating=4;
+                            }
+                            if(isset($_POST['3']))
+                            {
+                              $rating=3;
+                            }
+                            if(isset($_POST['2']))
+                            {
+                              $rating=2;
+                            }
+                            if(isset($_POST['1']))
+                            {
+                              $rating=1;
+                            }
+                          $trackID=$_GET["track"];
+                          if($rating!="")
+                          {
+                            $sql00="INSERT INTO `rates` (`username`, `trackid`, `timestamp`, `rating`) VALUES ('$Username', '$trackID', CURRENT_TIME(), '$rating')";
+                            $result00=mysqli_query($dbConnected,$sql00);
+                            if($result00)
+                            {
+                              echo '<script type="text/javascript">
+                              alert("Rating Success!");
+                              </script>';
+                            }
+                            else
+                            {
+                              echo '<script type="text/javascript">
+                              alert("Rating Fail!");
+                              </script>';                            
+                            }
+
+                          }
                           $sql0 = "SELECT ttitle
                                   From track
                                   WHERE trackID = '$trackID'";
@@ -165,17 +224,30 @@
                             $rating=$row["point"];
                             
                           }
+                          echo "Rating: ";
 
                           if($rating=="")
                             {
-                              echo "Rating: 0";
+                              $rating = 0;
                             }
                           else
                           {
-                            echo "Rating: ".$rating;
+                            $rating = intval($rating);
                           }
-                          
+                          for($i=0;$i<$rating;$i++)
+                          {
+                            echo '<span class="fa fa-star checked"></span>';
+
+                          }
+                          for($i=0;$i<5-$rating;$i++)
+                          {
+                            echo '<span class="fa fa-star "></span>';
+
+                          }
                           ?></h4>
+                          <h4 class="white"><i class="fa fa-check-circle-o"></i>
+                            
+                          </h4>
                     </div>
                 </div>
                 <div class="col-md-6 no-pad">
@@ -190,7 +262,7 @@
     <script type="text/javascript">
           function playTrack()
             {
-            var i = " fdsa";
+            var i ="";
             i = '<?php 
             $TRACKID='"'.$_GET["track"].'"';
             $USER='"'.$_GET["user"].'"';
@@ -205,9 +277,50 @@
               echo "FALSE";
             }
              ?>';
-            alert( i );
-            }
+            if(i=="SUCCESS")
+            { 
+              $('#contactForm').fadeToggle();
+              };
+            } ;
+
+    $(document).mouseup(function (e) {
+    var container = $("#contactForm");
+
+    if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        container.fadeOut();
+    }
+  });
 
 </script>
+<div id="contactForm">
+<?php
+  $Username = $_GET["user"];
+  $trackID=$_GET["track"];
+
+  echo '<form action="./trackprofile.php?user='.$Username.'&track='.$trackID.'" method="post">';
+?>
+<form action="./trackprofile.php" method="post">
+
+  <h3>How would you like to rate the track?</h3>
+  <p>
+    <input class="btn btn-outline-primary my-2 my-sm-0" name="5" type="submit" value="Perfect">
+  </p>
+  <p>
+    <input class="btn btn-outline-secondary my-2 my-sm-0" name="4" type="submit" value="Awesome">
+  </p>
+  <p>
+    <input class="btn btn-outline-success my-2 my-sm-0" name="3" type="submit" value="Good">
+  </p>
+  <p>
+    <input class="btn btn-outline-info my-2 my-sm-0" name="2" type="submit" value="Not Bad">
+  </p>
+  <p>
+    <input class="btn btn-outline-warning my-2 my-sm-0" name="1" type="submit" value="Bad">
+    </p>
+  </form>
+</div>
+<!-- Popup Div Ends Here -->
   </body>
   </html>

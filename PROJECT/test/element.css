@@ -1,7 +1,8 @@
-<style type="text/css">
-  #abc {
-background:url(https://i.ytimg.com/vi/4kfXjatgeEU/maxresdefault.jpg);
-
+@import "http://fonts.googleapis.com/css?family=Raleway";
+/*----------------------------------------------
+CSS settings for HTML div Exact Center
+------------------------------------------------*/
+#abc {
 width:100%;
 height:100%;
 opacity:.95;
@@ -19,8 +20,6 @@ top:-14px;
 cursor:pointer
 }
 div#popupContact {
-background:url(https://i.ytimg.com/vi/4kfXjatgeEU/maxresdefault.jpg);
-
 position:absolute;
 left:50%;
 top:17%;
@@ -36,7 +35,7 @@ border-radius:10px;
 font-family:raleway;
 background-color:#fff
 }
-/*p {
+p {
 margin-top:30px
 }
 h2 {
@@ -45,8 +44,8 @@ padding:20px 35px;
 margin:-10px -50px;
 text-align:center;
 border-radius:10px 10px 0 0
-}*/
-/*hr {
+}
+hr {
 margin:10px -50px;
 border:0;
 border-top:1px solid #ccc
@@ -60,7 +59,7 @@ padding-left:40px;
 font-size:16px;
 font-family:raleway
 }
-*/#name {
+#name {
 background-image:url(../images/name.jpg);
 background-repeat:no-repeat;
 background-position:5px 7px
@@ -70,7 +69,8 @@ background-image:url(../images/email.png);
 background-repeat:no-repeat;
 background-position:5px 7px
 }
-/*textarea {
+textarea {
+background-image:url(../images/msg.png);
 background-repeat:no-repeat;
 background-position:5px 7px;
 width:82%;
@@ -83,8 +83,8 @@ padding-left:40px;
 font-size:16px;
 font-family:raleway;
 margin-bottom:30px
-}*/
-/*#submit {
+}
+#submit {
 text-decoration:none;
 width:100%;
 text-align:center;
@@ -97,7 +97,6 @@ font-size:20px;
 cursor:pointer;
 border-radius:5px
 }
-/*
 span {
 color:red;
 font-weight:700
@@ -111,5 +110,4 @@ color:#fff;
 font-family:'Raleway',sans-serif;
 font-size:18px;
 cursor:pointer
-}*/
-</style>
+}
