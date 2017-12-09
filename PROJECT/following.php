@@ -71,16 +71,16 @@
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="profile.php?user='.$Username.'">Profiles<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:blue;" href="profile.php?user='.$Username.'">Profiles<span class="sr-only">(current)</span></a>';
 
              ?>
              
 <!--             <a class="nav-link" href="profile.php">Profiles<span class="sr-only">(current)</span></a>
  -->       </li>
           <li class="nav-item active">
-             <?php
+                        <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="following.php?user='.$Username.'">Following<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:red;" href="following.php?user='.$Username.'">Following<span class="sr-only">(current)</span></a>';
 
              ?>
              <!-- 
@@ -89,27 +89,31 @@
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="followee.php?user='.$Username.'">Follower<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:green;" href="followee.php?user='.$Username.'">Follower<span class="sr-only">(current)</span></a>';
 
              ?>
           </li>
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="likes.php?user='.$Username.'">Artists<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:yellow;" href="likes.php?user='.$Username.'">Likes<span class="sr-only">(current)</span></a>';
 
              ?>
           </li>
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="playlist.php?user='.$Username.'">Playlists<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:grey;" href="playlist.php?user='.$Username.'">Playlists<span class="sr-only">(current)</span></a>';
 
              ?>
           </li>
       </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+
+      <form class="form-inline my-2 my-lg-0" action="./search.php" method="get">';
+          <?php
+          echo '<input type="hidden" name=user value='.$Username.'>';
+          ?>
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" name="searchKey" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>

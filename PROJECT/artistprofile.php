@@ -109,7 +109,7 @@
                 </div>
                 <div class="col-md-6 no-pad">
                     <div class="user-image">
-                        <img src="https://farm7.staticflickr.com/6163/6195546981_200e87ddaf_b.jpg" class="img-responsive thumbnail">
+                        <img src="./images/musician.jpg" class="img-responsive thumbnail">
                     </div>
                 </div>
             </div>
