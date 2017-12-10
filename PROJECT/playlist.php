@@ -314,32 +314,35 @@
                           } 
                       ?>
 
+<?php
+    if ($vdel == 1) {
+          echo'<div id="contact">Add New Playlist</div>
+              <div id="contactForm">
 
+              <h1>Playlist Information</h1>
+              
+              <form action="playlist.php?user='.$Username.'" method="post">
+                <input placeholder="Title" type="text" name="title" required />
+                <p></p>
+                <div>
+                <select name="authorization">
+                  <option>Authorization</option>
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                </select>
+                <p></p>
+                </div>
+                </a>
 
-  <div id="contact">Add New Playlist</div>
-  <div id="contactForm">
+                <input class="formBtn" type="reset" />
+                <input class="formBtn" type="submit" name="add"/>
 
-  <h1>Playlist Information</h1>
+              </form>
+            </div>'; 
+    } 
+?>
+
   
-  <form action="playlist.php?user=<?php echo $Username ?>" method="post">
-    <input placeholder="Title" type="text" name="title" required />
-    <p></p>
-    <div>
-    <select name="authorization">
-      <option>Authorization</option>
-      <option value="public">Public</option>
-      <option value="private">Private</option>
-    </select>
-    <p></p>
-    </div>
-    </a>
-
-    <input class="formBtn" type="reset" />
-    <input class="formBtn" type="submit" name="add"/>
-    <?php echo $notadd; ?>
-
-  </form>
-</div>
 
 
 
