@@ -22,15 +22,14 @@
 </head>
 <body>
   <?php
-
                              if(isset($_GET['guest'])) {
-                              $checkname = $_GET['guest'];
-                              $vdel = 0;
-                             } else {
-                              $checkname = $_GET['user'];
-                              $vdel = 1;
-                            }
+                             	$checkName = $_GET['guest'];
 
+                             }
+                             else
+                             {
+                             	$checkName = $_GET['user'];
+                             }
                              if(isset($_GET['delete'])) {
                                   $Username = $_GET["user"];
                                   $delete = $_GET['delete'];
@@ -102,15 +101,6 @@
              echo '<a class="nav-link" href="playlist.php?user='.$Username.'">Playlists<span class="sr-only">(current)</span></a>';
              ?>
           </li>
-          <!-- <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Playlists</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
-        </ul> -->
       </ul>
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
@@ -130,8 +120,7 @@
                     <div class="user-pad">
                         <h3>
                           <?php
-                            $Username = $_GET["user"];
-                            echo $checkname;
+                            echo $checkName;
                           ?>
                         </h3>
                     </div>
@@ -147,7 +136,7 @@
                         }
                          $sql1 = "SELECT count(*) as num
                                   FROM follows
-                                  WHERE follower = '$checkname'";
+                                  WHERE follower = '$checkName'";
                          $result1 = $conn->query($sql1);
                         while($row=mysqli_fetch_array($result1))
                         {
@@ -156,8 +145,6 @@
                         echo "Following:".$cid;
                         ?>
                       </div>
-
-
                         <div class="user-pad">
                           <?php 
                         include 'databases.php';
@@ -170,7 +157,7 @@
                         }
                          $sql1 = "SELECT count(*) as num
                                   FROM follows
-                                  WHERE followee = '$checkname'";
+                                  WHERE followee = '$checkName'";
                          $result1 = $conn->query($sql1);
                         while($row=mysqli_fetch_array($result1))
                         {
@@ -179,11 +166,10 @@
                         echo "Follower:".$cid;
                         ?>
                         </div>
-
-
                         <div class="user-pad">
                           <?php 
                         include 'databases.php';
+
                         // Craete connection
                         $conn = new mysqli($servername, $username, $password, $dbname);
                         // Check connection
@@ -192,7 +178,7 @@
                         }
                          $sql1 = "SELECT count(*) as num
                                   FROM likes
-                                  WHERE username = '$checkname'";
+                                  WHERE username = '$checkName'";
                          $result1 = $conn->query($sql1);
                         while($row=mysqli_fetch_array($result1))
                         {
@@ -201,8 +187,6 @@
                         echo "likes:".$cid;
                         ?>
                         </div>
-
-
                     </div>
                 <div class="col-md-6 no-pad">
                     <div class="user-image">
@@ -214,23 +198,20 @@
                 
       </div>
 
-    <?php
-    if ($vdel == 1) {
-          echo'<form action="playlist.php?user='.$Username.'" method="post">'; 
-        } 
-    ?>
-
-    <div class="chk-all">
+    <?php echo'<form action="playlist.php?user='.$Username.'" method="post">'; 
+     if(!isset($_GET['guest'])){
+	echo '<div class="chk-all">
       <input type="checkbox" id="checkAll" />
-        <div class="btn-group">
-          <a data-toggle="dropdown"  class="btn mini all" aria-expanded="false" id="checkAll">All</a>
-          <?php
-          if ($vdel == 1) {
-          echo'<button type="button" class="btn btn-danger" style="visibility: hidden;" id="unfollowAll">Delete Checked</button>'; 
-          } 
-          ?>
-          
-          
+        <div class="btn-group">';
+    }
+      if(! isset($_GET['guest']))
+             {
+            echo '<a data-toggle="dropdown"  class="btn mini all" aria-expanded="false" id="checkAll">All</a>
+
+            <button type="submit" class="btn btn-danger" style="visibility: hidden;" id="unfollowAll" name="submit" value="Unfollow Checked">Unsubscribe selected</button>';
+            }
+  ?>
+
             </div>
                              </div>
                            <table class="table table-inbox table-hover">
@@ -259,9 +240,18 @@
                               }
                              }
                              $conn = new mysqli($servername, $username, $password, $dbname);
+                             if(!isset($_GET['guest']))
+                             {
                                   $sql1 = "SELECT playlist.ptitle,playlist.releasedate,playlist.Authorization,playlist.playlistid
                                            FROM playlist
-                                           WHERE playlist.username='$checkname'";
+                                           WHERE playlist.username='$checkName'";
+                             }
+							else
+							{
+								$sql1 = "SELECT playlist.ptitle,playlist.releasedate,playlist.Authorization,playlist.playlistid
+                                           FROM playlist
+                                           WHERE playlist.username='$checkName' and playlist.authorization='public'";
+                            }
                                   $result1 = $conn->query($sql1);
                                   $numrow = 1;
                                   while($row = $result1->fetch_assoc())
@@ -275,10 +265,11 @@
                                       <td class="view-message  text-right">'.$row["releasedate"].'</td>
                                       <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
                                       <td>';
-                                      if ($vdel==1){
-                                        echo '<a href="playlist.php?user='.$Username.'&delete='.$row["playlistid"].'"><button type="button" class="btn btn-danger">Delete</button></a></td>';
+                                      if(!isset($_GET['guest'])){
+                                      echo '<a href="playlist.php?user='.$Username.'&delete='.$row["playlistid"].'"><button type="button" class="btn btn-danger">Delete</button></a></td>
+                                          </tr>';
                                       }
-                                    echo '</tr>';
+                                      echo '</tr>';
                                    $numrow++;
                                  }
                               ?>
