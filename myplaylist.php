@@ -25,7 +25,6 @@
         include 'databases.php';
 
         $vdelete = 0;
-        $vadd = 0;
 
         if(isset($_GET['playlistid'])) {
           $vlist = 0;
@@ -34,18 +33,17 @@
           $conn = new mysqli($servername, $username, $password, $dbname);
           $sql1 = "SELECT Username as name FROM playlist WHERE playlistID='$listid'";
           $result1 = $conn->query($sql1);
-          while($row=mysqli_fetch_array($result1)){
-            if($Username == $row['name']) {
-              $vdelete = 1;
-            } else {
-              $vadd = 1;
+            while($row=mysqli_fetch_array($result1)){
+              if($Username == $row['name']) {
+                $vdelete = 1;}
             }
-          }
-        } else {
+          } elseif(isset($_GET['albumid'])){
           $vlist = 1;
           $listid = $_GET['albumid'];
-          $vadd = 1;
-        }           
+        } else {
+          $vlist = 2;
+          $artist = $_GET['artist'];
+        }        
 
         if(isset($_GET['delete'])) {
           $Username = $_GET["user"];
@@ -145,6 +143,7 @@
            <div class="row user-menu-container square">
           <div class="row coralbg white">
                 <div class="col-md-6 no-pad">
+
                     <div class="user-pad">
                         <h3>
                           <?php
@@ -159,17 +158,21 @@
                               while($row=mysqli_fetch_array($result1)){
                                 $cid=$row["ptitle"];
                               }
-                            } else {
+                            } elseif($vlist == 1){
                               $sql1 = "SELECT atitle FROM album WHERE albumID='$listid'";
                               $result1 = $conn->query($sql1);
                               while($row=mysqli_fetch_array($result1)){
                                 $cid=$row["atitle"];
                               }
+                            } else {
+                              $cid = $artist;
                             }
                             echo $cid;
                           ?>
                         </h3>
                     </div>
+
+
                     <div class="user-pad">
                           <?php
                             include 'databases.php';
@@ -183,16 +186,25 @@
                               while($row=mysqli_fetch_array($result1)){
                                 $cid=$row["num"];
                               }
-                            } else {
+                            } elseif($vlist == 1){
                               $sql1 = "SELECT count(*) as num FROM albumtrack WHERE albumID='$listid'";
                               $result1 = $conn->query($sql1);
                               while($row=mysqli_fetch_array($result1)){
                                 $cid=$row["num"];
                               }
+                            } else {
+                              $sql1 = "SELECT count(*) as count
+                                       From track,artist
+                                       WHERE artist.aname = '$artist' and artist.artistID=track.artistID";
+                              $result1 = $conn->query($sql1);
+                              while($row=mysqli_fetch_array($result1)){
+                                $cid=$row["count"];
+                              }
                             }
                             echo "Number of tracks:".$cid;
                           ?>
                     </div>
+
                     <div class="user-pad">
                           <?php
                             include 'databases.php';
@@ -206,17 +218,30 @@
                               while($row=mysqli_fetch_array($result1)){
                                 $cid=$row["ReleaseDate"];
                               }
-                            } else {
+                              echo "Release Date:".$cid;
+                            } elseif($vlist == 1) {
                               $sql1 = "SELECT IssueDate FROM album WHERE albumID='$listid'";
                               $result1 = $conn->query($sql1);
                               while($row=mysqli_fetch_array($result1)){
                                 $cid=$row["IssueDate"];
                               }
+                              echo "Issue Date:".$cid;
+                            } else {
+                              $sql1 = "SELECT description
+                                       From artist
+                                       WHERE aname='$artist'";
+                              $result1 = $conn->query($sql1);
+                              while($row=mysqli_fetch_array($result1)){
+                                $cid=$row["description"];
+                              }
+                              echo "Description:".$cid;
                             }
-                            echo "ReleaseDate:".$cid;
+                            
                           ?>
                     </div>
+
                     </div>
+
                 <div class="col-md-6 no-pad">
                     <div class="user-image">
                         <img src="https://farm7.staticflickr.com/6163/6195546981_200e87ddaf_b.jpg" class="img-responsive thumbnail">
@@ -230,12 +255,7 @@
     <?php
       if ($vdelete == 1) {
         echo'<form action="myplaylist.php?user='.$Username.'&playlistid='.$listid.'" method="post">'; 
-      } elseif ($vlist == 0){
-        echo'<form action="addtoplaylist.php?user='.$Username.'&playlistid='.$listid.'" method="post">';
-      } else {
-        echo'<form action="addtoplaylist.php?user='.$Username.'&albumid='.$listid.'" method="post">';
       }
-    
     ?>
 
     <div class="chk-all">
@@ -245,8 +265,6 @@
           <?php
             if ($vdelete == 1) {
               echo '<button type="submit" class="btn btn-danger" style="visibility: hidden;" id="unfollowAll" name="delform" value="Unfollow Checked">Delete selected</button>';
-            } else {
-              echo '<button type="submit" class="btn btn-danger" style="visibility: hidden;" id="unfollowAll1" name="addform" value="Unfollow Checked">Add all to my playlist</button>';
             }
           ?>     
             </div>
@@ -284,10 +302,15 @@
                                              FROM track,playlisttrack
                                              WHERE playlisttrack.playlistid='$listid' and track.TrackID=playlisttrack.trackid";
                                     $result1 = $conn->query($sql1);
-                                  } else {
+                                  } elseif($vlist == 1) {
                                     $sql1 = "SELECT track.Ttitle, track.duration, track.genre, track.TrackID
                                              FROM track,albumtrack
-                                             WHERE albumtrack.albumID='$listid' and track.TrackID=albumtrack.trackID";
+                                             WHERE albumtrack.albumid='$listid' and track.TrackID=albumtrack.trackID";
+                                    $result1 = $conn->query($sql1);
+                                  } else {
+                                    $sql1 = "SELECT track.Ttitle, track.duration, track.genre, track.TrackID
+                                             FROM track,artist
+                                             WHERE track.artistID=artist.artistID and artist.aname = '$artist'";
                                     $result1 = $conn->query($sql1);
                                   }
                                   $numrow = 1;
@@ -304,10 +327,7 @@
                                       <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
                                    
                                       <td>
-                                      <a href="play.php?user='.$Username.'&trackid='.$row["TrackID"].'"><button type="button" class="btn btn-warning">Play</button></a>';
-                                    if ($vadd == 1) {
-                                      echo '<a href="add.php?user='.$Username.'&trackid='.$row["TrackID"].'"><button type="button" class="btn btn-warning">Add</button></a>';
-                                    }
+                                      <a href="trackprofile.php?user='.$Username.'&track='.$row["TrackID"].'"><button type="button" class="btn btn-warning">Play</button></a>';
                                     if ($vdelete == 1) {
                                       echo '<a href="myplaylist.php?user='.$Username.'&delete='.$row["TrackID"].'&playlistid='.$listid.'"><button type="button" class="btn btn-danger">Delete</button></a>';
                                     }
