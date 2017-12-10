@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link rel="stylesheet" href="css/following.css">
+    <link rel="stylesheet" href="./css/popup.css">
     <style type="text/css">
       body, html{
      height: 100%;
@@ -18,7 +19,6 @@
 }
     </style>
     <script src="./jquery/jquery.min.js"></script> 
-
 </head>
 <body>
   <?php
@@ -30,6 +30,30 @@
                               $checkname = $_GET['user'];
                               $vdel = 1;
                             }
+
+                            if(isset($_POST['add'])) {
+                            $title = $_POST['title'];
+                            $authorization = $_POST['authorization'];
+                            $Username = $_GET["user"];
+                            $notadd = 0;
+                            include 'databases.php';
+                            $conn = new mysqli($servername, $username, $password, $dbname);
+                            $sql1 = "SELECT playlistID FROM playlist WHERE ptitle='$title'";
+                            echo $sql1;
+                            $result1 = $conn->query($sql1);
+                            while($row=mysqli_fetch_array($result1))
+                            {
+                              $notadd = 1;
+                            } 
+                            echo $notadd;
+                            if ($notadd == 0) {
+                              $sql2 = "INSERT INTO `playlist` (`playlistID`, `ptitle`, `ReleaseDate`, `Username`, `authorization`) VALUES (NULL, '$title', CURRENT_DATE(), '$Username', '$authorization')";
+                              $conn->query($sql2);
+                            } else {
+                              echo '<script type="text/javascript">
+                              alert("playlist exist!");</script>';
+                            } 
+                           }
 
                              if(isset($_GET['delete'])) {
                                   $Username = $_GET["user"];
@@ -226,7 +250,7 @@
           <a data-toggle="dropdown"  class="btn mini all" aria-expanded="false" id="checkAll">All</a>
           <?php
           if ($vdel == 1) {
-          echo'<button type="button" class="btn btn-danger" style="visibility: hidden;" id="unfollowAll">Delete Checked</button>'; 
+          echo'<button type="submit" class="btn btn-danger" style="visibility: hidden;" name="submit" id="unfollowAll">Delete Checked</button>';
           } 
           ?>
           
@@ -284,8 +308,47 @@
                               ?>
                           </tbody>
                           </table>
+                          <?php
+                          if ($vdel == 1) {
+                            echo'</form>'; 
+                          } 
+                      ?>
+
+
+
+  <div id="contact">Add New Playlist</div>
+  <div id="contactForm">
+
+  <h1>Playlist Information</h1>
+  
+  <form action="playlist.php?user=<?php echo $Username ?>" method="post">
+    <input placeholder="Title" type="text" name="title" required />
+    <p></p>
+    <div>
+    <select name="authorization">
+      <option>Authorization</option>
+      <option value="public">Public</option>
+      <option value="private">Private</option>
+    </select>
+    <p></p>
+    </div>
+    </a>
+
+    <input class="formBtn" type="reset" />
+    <input class="formBtn" type="submit" name="add"/>
+    <?php echo $notadd; ?>
+
+  </form>
+</div>
+
+
+
 
 </div>
+
+
+                      
+
 </main>
  <script type="text/javascript">
 $("#checkAll").click(function () {
@@ -315,6 +378,23 @@ $(function(){
         });
       });
     });
+$(function() {
+  
+  // contact form animations
+  $('#contact').click(function() {
+    $('#contactForm').fadeToggle();
+  })
+  $(document).mouseup(function (e) {
+    var container = $("#contactForm");
+
+    if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        container.fadeOut();
+    }
+  });
+  
+});
 </script>
 </body>
 </html>
