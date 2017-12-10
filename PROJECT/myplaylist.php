@@ -23,10 +23,7 @@
 <body>
   <?php  
         include 'databases.php';
-
         $vdelete = 0;
-        $vadd = 0;
-
         if(isset($_GET['playlistid'])) {
           $vlist = 0;
           $listid = $_GET['playlistid'];
@@ -34,19 +31,17 @@
           $conn = new mysqli($servername, $username, $password, $dbname);
           $sql1 = "SELECT Username as name FROM playlist WHERE playlistID='$listid'";
           $result1 = $conn->query($sql1);
-          while($row=mysqli_fetch_array($result1)){
-            if($Username == $row['name']) {
-              $vdelete = 1;
-            } else {
-              $vadd = 1;
+            while($row=mysqli_fetch_array($result1)){
+              if($Username == $row['name']) {
+                $vdelete = 1;}
             }
-          }
-        } else {
-          $artist = $_GET['artist'];
+          } elseif(isset($_GET['albumid'])){
           $vlist = 1;
-          $vadd = 1;
-        }           
-
+          $listid = $_GET['albumid'];
+        } else {
+          $vlist = 2;
+          $artist = $_GET['artist'];
+        }        
         if(isset($_GET['delete'])) {
           $Username = $_GET["user"];
           $delete = $_GET['delete'];
@@ -56,7 +51,6 @@
           $sql1 = "DELETE FROM playlisttrack WHERE playlistid='$listid' AND trackid='$delete'";
           $conn->query($sql1);
         }
-
         if(isset($_POST['delform'])){
           $array = $_POST['selector'];
           $Username = $_GET["user"];
@@ -135,8 +129,7 @@
 
 
     
-    <main role="main">
-<div style="background:transparent" class="jumbotron">
+    <div style="background:transparent" class="jumbotron">
            <div class="container">
            <div class="row user-menu-container square">
           <div class="row coralbg white">
@@ -156,6 +149,12 @@
                               while($row=mysqli_fetch_array($result1)){
                                 $cid=$row["ptitle"];
                               }
+                            } elseif($vlist == 1){
+                              $sql1 = "SELECT atitle FROM album WHERE albumID='$listid'";
+                              $result1 = $conn->query($sql1);
+                              while($row=mysqli_fetch_array($result1)){
+                                $cid=$row["atitle"];
+                              }
                             } else {
                               $cid = $artist;
                             }
@@ -174,6 +173,12 @@
                             }
                             if ($vlist == 0){
                               $sql1 = "SELECT count(*) as num FROM playlisttrack WHERE playlistid='$listid'";
+                              $result1 = $conn->query($sql1);
+                              while($row=mysqli_fetch_array($result1)){
+                                $cid=$row["num"];
+                              }
+                            } elseif($vlist == 1){
+                              $sql1 = "SELECT count(*) as num FROM albumtrack WHERE albumID='$listid'";
                               $result1 = $conn->query($sql1);
                               while($row=mysqli_fetch_array($result1)){
                                 $cid=$row["num"];
@@ -205,6 +210,13 @@
                                 $cid=$row["ReleaseDate"];
                               }
                               echo "Release Date:".$cid;
+                            } elseif($vlist == 1) {
+                              $sql1 = "SELECT IssueDate FROM album WHERE albumID='$listid'";
+                              $result1 = $conn->query($sql1);
+                              while($row=mysqli_fetch_array($result1)){
+                                $cid=$row["IssueDate"];
+                              }
+                              echo "Issue Date:".$cid;
                             } else {
                               $sql1 = "SELECT description
                                        From artist
@@ -281,6 +293,11 @@
                                              FROM track,playlisttrack
                                              WHERE playlisttrack.playlistid='$listid' and track.TrackID=playlisttrack.trackid";
                                     $result1 = $conn->query($sql1);
+                                  } elseif($vlist == 1) {
+                                    $sql1 = "SELECT track.Ttitle, track.duration, track.genre, track.TrackID
+                                             FROM track,albumtrack
+                                             WHERE albumtrack.albumid='$listid' and track.TrackID=albumtrack.trackID";
+                                    $result1 = $conn->query($sql1);
                                   } else {
                                     $sql1 = "SELECT track.Ttitle, track.duration, track.genre, track.TrackID
                                              FROM track,artist
@@ -325,20 +342,17 @@ $('#checkAll').change(function() {
         $("#unfollowAll").css("visibility","hidden");
         $("#unfollowAll1").css("visibility","hidden")
    }
-
 });
 $(".mail-checkbox").change(function(){
     if ($('.mail-checkbox:checked')) {
        //do something
          $("#unfollowAll").css("visibility","visible");
          $("#unfollowAll1").css("visibility","visible")
-
     }
     if ($('.mail-checkbox:checked').length ==0)
     {
         $("#unfollowAll").css("visibility","hidden");
         $("#unfollowAll1").css("visibility","hidden")
-
     }
 });
 $(function(){
@@ -355,7 +369,6 @@ $(function(){
         });
       });
     });
-
 </script>
 </body>
 </html>
