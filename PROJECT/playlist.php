@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link rel="stylesheet" href="css/following.css">
+    <link rel="stylesheet" href="./css/popup.css">
     <style type="text/css">
       body, html{
      height: 100%;
@@ -18,18 +19,44 @@
 }
     </style>
     <script src="./jquery/jquery.min.js"></script> 
-
 </head>
 <body>
   <?php
-                             if(isset($_GET['guest'])) {
-                             	$checkName = $_GET['guest'];
 
-                             }
-                             else
-                             {
-                             	$checkName = $_GET['user'];
-                             }
+							include './databases.php';
+                             if(isset($_GET['guest'])) {
+                              $checkname = $_GET['guest'];
+                              $vdel = 0;
+                             } else {
+                              $checkname = $_GET['user'];
+                              $vdel = 1;
+                            }
+
+                            if(isset($_POST['add'])) {
+                            $title = $_POST['title'];
+                            $authorization = $_POST['authorization'];
+                            $Username = $_GET["user"];
+                            $notadd = 0;
+                            
+                            $conn = new mysqli($servername, $username, $password, $dbname);
+                            $sql1 = "SELECT playlistID FROM playlist WHERE ptitle='$title'";
+                            echo $sql1;
+                            $result1 = $conn->query($sql1);
+                            while($row=mysqli_fetch_array($result1))
+                            {
+                              $notadd = 1;
+                            } 
+                            echo $notadd;
+                            if ($notadd == 0) {
+                              $sql2 = "INSERT INTO `playlist` (`playlistID`, `ptitle`, `ReleaseDate`, `Username`, `authorization`) VALUES (NULL, '$title', CURRENT_DATE(), '$Username', '$authorization')";
+                              echo $sql2;
+                              $conn->query($sql2);
+                            } else {
+                              echo '<script type="text/javascript">
+                              alert("playlist exist!");</script>';
+                            } 
+                           }
+
                              if(isset($_GET['delete'])) {
                                   $Username = $_GET["user"];
                                   $delete = $_GET['delete'];
@@ -57,7 +84,7 @@
 ?>
 
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-     <?php
+	   <?php
         $Username = $_GET["user"];
         echo '<a class="navbar-brand" href="welcome.php?user='.$Username.'">Spotify</a>';
       ?>
@@ -68,9 +95,10 @@
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <?php
+          	<?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="profile.php?user='.$Username.'">Profiles<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:blue;" href="profile.php?user='.$Username.'">Profiles<span class="sr-only">(current)</span></a>';
+
              ?>
              
 <!--             <a class="nav-link" href="profile.php">Profiles<span class="sr-only">(current)</span></a>
@@ -78,7 +106,8 @@
           <li class="nav-item active">
                         <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="following.php?user='.$Username.'">Following<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:red;" href="following.php?user='.$Username.'">Following<span class="sr-only">(current)</span></a>';
+
              ?>
              <!-- 
             <a class="nav-link" href="Follows.html">Following<span class="sr-only">(current)</span></a> -->
@@ -86,28 +115,36 @@
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="followee.php?user='.$Username.'">Follower<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:green;" href="followee.php?user='.$Username.'">Follower<span class="sr-only">(current)</span></a>';
+
              ?>
           </li>
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="likes.php?user='.$Username.'">Artists<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:yellow;" href="likes.php?user='.$Username.'">Likes<span class="sr-only">(current)</span></a>';
+
              ?>
           </li>
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="playlist.php?user='.$Username.'">Playlists<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:grey;" href="playlist.php?user='.$Username.'">Playlists<span class="sr-only">(current)</span></a>';
+
              ?>
           </li>
       </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+
+      <form class="form-inline my-2 my-lg-0" action="./search.php" method="get">';
+          <?php
+          echo '<input type="hidden" name="user" value="'.$Username.'">';
+          ?>
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" name="searchKey" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>
     </nav>
+
 
 
     
@@ -120,7 +157,8 @@
                     <div class="user-pad">
                         <h3>
                           <?php
-                            echo $checkName;
+                            $Username = $_GET["user"];
+                            echo $checkname;
                           ?>
                         </h3>
                     </div>
@@ -136,7 +174,7 @@
                         }
                          $sql1 = "SELECT count(*) as num
                                   FROM follows
-                                  WHERE follower = '$checkName'";
+                                  WHERE follower = '$checkname'";
                          $result1 = $conn->query($sql1);
                         while($row=mysqli_fetch_array($result1))
                         {
@@ -145,6 +183,8 @@
                         echo "Following:".$cid;
                         ?>
                       </div>
+
+
                         <div class="user-pad">
                           <?php 
                         include 'databases.php';
@@ -157,7 +197,7 @@
                         }
                          $sql1 = "SELECT count(*) as num
                                   FROM follows
-                                  WHERE followee = '$checkName'";
+                                  WHERE followee = '$checkname'";
                          $result1 = $conn->query($sql1);
                         while($row=mysqli_fetch_array($result1))
                         {
@@ -166,10 +206,11 @@
                         echo "Follower:".$cid;
                         ?>
                         </div>
+
+
                         <div class="user-pad">
                           <?php 
                         include 'databases.php';
-
                         // Craete connection
                         $conn = new mysqli($servername, $username, $password, $dbname);
                         // Check connection
@@ -178,7 +219,7 @@
                         }
                          $sql1 = "SELECT count(*) as num
                                   FROM likes
-                                  WHERE username = '$checkName'";
+                                  WHERE username = '$checkname'";
                          $result1 = $conn->query($sql1);
                         while($row=mysqli_fetch_array($result1))
                         {
@@ -187,6 +228,8 @@
                         echo "likes:".$cid;
                         ?>
                         </div>
+
+
                     </div>
                 <div class="col-md-6 no-pad">
                     <div class="user-image">
@@ -198,20 +241,23 @@
                 
       </div>
 
-    <?php echo'<form action="playlist.php?user='.$Username.'" method="post">'; 
-     if(!isset($_GET['guest'])){
-	echo '<div class="chk-all">
+    <?php
+    if ($vdel == 1) {
+          echo'<form action="playlist.php?user='.$Username.'" method="post">'; 
+        } 
+    ?>
+
+    <div class="chk-all">
       <input type="checkbox" id="checkAll" />
-        <div class="btn-group">';
-    }
-      if(! isset($_GET['guest']))
-             {
-            echo '<a data-toggle="dropdown"  class="btn mini all" aria-expanded="false" id="checkAll">All</a>
-
-            <button type="submit" class="btn btn-danger" style="visibility: hidden;" id="unfollowAll" name="submit" value="Unfollow Checked">Unsubscribe selected</button>';
-            }
-  ?>
-
+        <div class="btn-group">
+          <a data-toggle="dropdown"  class="btn mini all" aria-expanded="false" id="checkAll">All</a>
+          <?php
+          if ($vdel == 1) {
+          echo'<button type="submit" class="btn btn-danger" style="visibility: hidden;" name="submit" id="unfollowAll">Delete Checked</button>';
+          } 
+          ?>
+          
+          
             </div>
                              </div>
                            <table class="table table-inbox table-hover">
@@ -240,18 +286,16 @@
                               }
                              }
                              $conn = new mysqli($servername, $username, $password, $dbname);
-                             if(!isset($_GET['guest']))
-                             {
+                             if($vdel==1){
                                   $sql1 = "SELECT playlist.ptitle,playlist.releasedate,playlist.Authorization,playlist.playlistid
                                            FROM playlist
-                                           WHERE playlist.username='$checkName'";
-                             }
-							else
-							{
-								$sql1 = "SELECT playlist.ptitle,playlist.releasedate,playlist.Authorization,playlist.playlistid
+                                           WHERE playlist.username='$checkname'";}
+                                           else
+                                           {
+                                           	$sql1 = "SELECT playlist.ptitle,playlist.releasedate,playlist.Authorization,playlist.playlistid
                                            FROM playlist
-                                           WHERE playlist.username='$checkName' and playlist.authorization='public'";
-                            }
+                                           WHERE playlist.username='$checkname' and authorization='public'";
+                                           }
                                   $result1 = $conn->query($sql1);
                                   $numrow = 1;
                                   while($row = $result1->fetch_assoc())
@@ -265,18 +309,58 @@
                                       <td class="view-message  text-right">'.$row["releasedate"].'</td>
                                       <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
                                       <td>';
-                                      if(!isset($_GET['guest'])){
-                                      echo '<a href="playlist.php?user='.$Username.'&delete='.$row["playlistid"].'"><button type="button" class="btn btn-danger">Delete</button></a></td>
-                                          </tr>';
+                                      if ($vdel==1){
+                                        echo '<a href="playlist.php?user='.$Username.'&delete='.$row["playlistid"].'"><button type="button" class="btn btn-danger">Delete</button></a></td>';
                                       }
-                                      echo '</tr>';
+                                    echo '</tr>';
                                    $numrow++;
                                  }
                               ?>
                           </tbody>
                           </table>
+                          <?php
+                          if ($vdel == 1) {
+                            echo'</form>'; 
+                          } 
+                      ?>
+
+<?php
+    if ($vdel == 1) {
+          echo'<div id="contact">Add New Playlist</div>
+              <div id="contactForm">
+
+              <h1>Playlist Information</h1>
+              
+              <form action="playlist.php?user='.$Username.'" method="post">
+                <input placeholder="Title" type="text" name="title" required />
+                <p></p>
+                <div>
+                <select name="authorization">
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                </select>
+                <p></p>
+                </div>
+                </a>
+
+                <input class="formBtn" type="reset" value="reset"/>
+                <input class="formBtn" type="submit" name="add" value="submit"/>
+
+              </form>
+            </div>'; 
+    } 
+?>
+
+  
+
+
+
 
 </div>
+
+
+                      
+
 </main>
  <script type="text/javascript">
 $("#checkAll").click(function () {
@@ -306,6 +390,23 @@ $(function(){
         });
       });
     });
+$(function() {
+  
+  // contact form animations
+  $('#contact').click(function() {
+    $('#contactForm').fadeToggle();
+  })
+  $(document).mouseup(function (e) {
+    var container = $("#contactForm");
+
+    if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        container.fadeOut();
+    }
+  });
+  
+});
 </script>
 </body>
 </html>

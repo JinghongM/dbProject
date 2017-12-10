@@ -75,7 +75,7 @@
 
       <form class="form-inline my-2 my-lg-0" action="./search.php" method="get">';
           <?php
-          echo '<input type="hidden" name=user value='.$Username.'>';
+          echo '<input type="hidden" name="user" value="'.$Username.'">';
           ?>
           <input class="form-control mr-sm-2" type="text" placeholder="Search" name="searchKey" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -313,15 +313,7 @@
 				    <tr>
              <?php 
 
-                         $sql2 = "SELECT DISTINCT artist.aname, album.atitle, album.issueDate
-                                                  FROM likes,artist,track,albumtrack,album
-                                                  WHERE artist.artistID=likes.artistID AND
-                                                  track.artistID=artist.artistID AND
-                                                albumtrack.trackID=track.trackID AND
-                                                album.albumID=albumtrack.albumID AND
-                                                likes.username='$Username'
-                                                  ORDER BY album.issueDate DESC
-                                                  LIMIT 10";
+                         $sql2 = "SELECT DISTINCT artist.aname, album.atitle, album.issueDate FROM likes,artist,track,albumtrack,album WHERE artist.artistID=likes.artistID AND track.artistID=artist.artistID AND albumtrack.trackID=track.trackID AND album.albumID=albumtrack.albumID AND likes.username='$Username' ORDER BY album.issueDate DESC LIMIT 10";
                          $result2 = $conn->query($sql2);
                          $numrow = 1;
                          while($row = $result2->fetch_assoc())
@@ -387,20 +379,15 @@
 				  <tbody>
 				    <tr>
 				       <?php
-				       $sql3 = "SELECT track.Ttitle,artist.aname
-								FROM track,plays,user,artist
-								WHERE user.Username=plays.username and plays.trackid=track.TrackID and track.artistID=artist.artistID
-								AND user.Username='$Username'
-								ORDER BY timestamp DESC 
-								LIMIT 10";
+				       $sql3 = "SELECT track.Ttitle,artist.aname FROM track,plays,user,artist WHERE user.Username=plays.username and plays.trackid=track.TrackID and track.artistID=artist.artistID AND user.Username='$Username' ORDER BY timestamp DESC LIMIT 10";
                          $result3 = $conn->query($sql3);
                          $numrow = 1;
                          while($row = $result3->fetch_assoc())
                          {
-                              echo '<tr>
+                            echo '<tr>
 				                    <th scope="row">'.$numrow.'</th>
 				                    <td>'.$row["Ttitle"].'</td>
-				                    <td>'.$row["Artist"].'</td>
+				                    <td>'.$row["aname"].'</td>
                                     </tr>';
                               $numrow++;
                          }

@@ -110,13 +110,15 @@
              ?>
           </li>
       </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+<form class="form-inline my-2 my-lg-0" action="./search.php" method="get">';
+          <?php
+          echo '<input type="hidden" name="user" value="'.$Username.'">';
+          ?>
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" name="searchKey" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>
     </nav>
-
 
     <main role="main">
 <div style="background:transparent" class="jumbotron">
@@ -291,7 +293,7 @@
                              $conn = new mysqli($servername, $username, $password, $dbname);
                              $sql1 = "SELECT user.Username, user.city
                                            FROM user
-                                           WHERE username like '%$searchKey%' or city='%$searchKey%'";
+                                           WHERE username like '%$searchKey%'";
                                   $result1 = $conn->query($sql1);
                                   $numrow = 1;
                                   while($row = $result1->fetch_assoc())
@@ -302,10 +304,10 @@
                                         <input name="selector[]" type="checkbox" class="mail-checkbox" value="'.$row["Username"].'" />
                                       </td>
                                       <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                      <td class="view-message  dont-show">'.$row["Username"].'</td>
+                                      <td class="view-message  dont-show"><a href="profile.php?user='.$_GET["user"].'&guest='.$row["Username"].'">'.$row["Username"].'</td>
                                       <td class="view-message  text-right">'.$row["city"].'</td>
                                       <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
-                                      <td><a href="following.php?user='.$Username.'&unfo='.$row["Username"].'"><button type="button" class="btn btn-success">Follow</button></a></td>
+                                      <td><a href="profile.php?user='.$_GET["user"].'&guest='.$row["Username"].'"><button type="button" class="btn btn-success">View</button></a></td>
 
                                         </tr>';
                                    $numrow++;
@@ -327,7 +329,7 @@
                              <?php 
                              include 'databases.php';
                              $conn = new mysqli($servername, $username, $password, $dbname);
-                             $sql2 = "SELECT aname, description
+                             $sql2 = "SELECT artistID,aname, description
                                            FROM artist
                                            WHERE aname like'%$searchKey%' or description like '%$searchKey%'";
                                   $result2 = $conn->query($sql2);
@@ -340,10 +342,10 @@
                                         <input name="selector[]" type="checkbox" class="mail-checkbox" value="'.$row["aname"].'" />
                                       </td>
                                       <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                      <td class="view-message  dont-show">'.$row["aname"].'</td>
+                                      <td class="view-message  dont-show"><a href="artistprofile.php?user='.$_GET["user"].'&artist='.$row["artistID"].'">'.$row["aname"].'</td>
                                       <td class="view-message  text-right">'.$row["description"].'</td>
                                       <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
-                                      <td><a href="following.php?user='.$Username.'&unfo='.$row["aname"].'"><button type="button" class="btn btn-success">Like</button></a></td>
+                                      <td><a href="artistprofile.php?user='.$_GET["user"].'&artist='.$row["artistID"].'"><button type="button" class="btn btn-success">View</button></a></td>
 
                                         </tr>';
                                    $numrow++;
@@ -380,11 +382,11 @@
                                         <input name="selector[]" type="checkbox" class="mail-checkbox" value="'.$row["trackid"].'" />
                                       </td>
                                       <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                      <td class="view-message  dont-show">'.$row["ttitle"].'</td>
+                                      <td class="view-message  dont-show"><a href="trackprofile.php?user='.$_GET["user"].'&track='.$row["trackid"].'">'.$row["ttitle"].'</td>
                                       <td class="view-message  text-right">'.$row["duration"].'</td>
                                       <td class="view-message  text-right">'.$row["genre"].'</td>
                                       <td class="view-message  text-right">'.$row["aname"].'</td>
-                                      <td><a href="following.php?user='.$Username.'&unfo='.$row["aname"].'"><button type="button" class="btn btn-success">Add</button></a></td>
+                                      <td><a href="trackprofile.php?user='.$_GET["user"].'&track='.$row["trackid"].'"><button type="button" class="btn btn-success">View</button></a></td>
 
                                         </tr>';
                                    $numrow++;
@@ -419,9 +421,11 @@
                                         <input name="selector[]" type="checkbox" class="mail-checkbox" value="'.$row["playlistID"].'" />
                                       </td>
                                       <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                      <td class="view-message  dont-show">'.$row["ptitle"].'</td>
+                                      <td class="view-message  dont-show"><a href="myplaylist.php?user='.$_GET["user"].'&playlistid='.$row["playlistID"].'">'.$row["ptitle"].'</a></td>
                                       <td class="view-message  text-right">'.$row["ReleaseDate"].'</td>
                                       <td class="view-message  text-right">'.$row["Username"].'</td>
+									  <td><a href="myplaylist.php?user='.$_GET["user"].'&playlistid='.$row["playlistID"].'"><button type="button" class="btn btn-success">View</button></a></td>
+
                                         </tr>';
                                    $numrow++;
                                  }
@@ -455,8 +459,10 @@
                                         <input name="selector[]" type="checkbox" class="mail-checkbox" value="'.$row["albumID"].'" />
                                       </td>
                                       <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
-                                      <td class="view-message  dont-show">'.$row["atitle"].'</td>
+                                      <td class="view-message  dont-show"><a href="myplaylist.php?user='.$_GET['user'].'&albumid='.$row["albumID"].'">'.$row["atitle"].'</a></td>
                                       <td class="view-message  text-right">'.$row["IssueDate"].'</td>
+									  <td><a href="myplaylist.php?user='.$_GET["user"].'&albumid='.$row["albumID"].'"><button type="button" class="btn btn-success">View</button></a></td>
+
                                         </tr>';
                                    $numrow++;
                                  }

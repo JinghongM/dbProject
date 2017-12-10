@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Profile</title>
+  <title>Artist Profile</title>
     <link href="./css/profile.css" rel="stylesheet" media="screen">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -64,13 +64,15 @@
              ?>
           </li>
       </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+<form class="form-inline my-2 my-lg-0" action="./search.php" method="get">';
+          <?php
+          echo '<input type="hidden" name="user" value="'.$Username.'">';
+          ?>
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" name="searchKey" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>
     </nav>
-
 
 
 
@@ -155,7 +157,8 @@
                 <div class="col-md-3 user-pad text-center">
                     <h3>Track</h3>
                     <h4>
-                      <?php
+                     <?php
+                      echo '<a href="./myplaylist.php?user='.$Username.'&artist='.$_GET["artist"].'">';
                       $sql2 = "SELECT count(*) as count
                                   From track,artist
                                   WHERE artist.aname = '$checkName' and artist.artistID=track.artistID";
@@ -166,17 +169,18 @@
                             
                           }
                           echo $trackNumber;
-
                     ?>
+                    </a>
                     </h4>
                 </div>
                 <div class="col-md-3 user-pad text-center">
-                    <h3>Liked</h3>
+                    <h3>Follower</h3>
                     <h4>
                       <?php
+                      echo '<a href="./likeuser.php?user='.$Username.'&artist='.$_GET["artist"].'">';
                       $sql3 = "SELECT count(*) as count
-                                  From likes,artist
-                                  WHERE artist.aname = '$checkName' and likes.artistID=artist.artistID";
+                                  From likes
+                                  WHERE likes.artistID = '".$_GET['artist']."'";
                           $result3=mysqli_query($dbConnected,$sql3);
                           $likedNumber = 0;
                           while($row=mysqli_fetch_array($result3)){
@@ -184,9 +188,8 @@
                             
                           }
                           echo $likedNumber;
-
                     ?>
-                      
+                    </a>  
                     </h4>
                 </div>
                 

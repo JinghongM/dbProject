@@ -42,8 +42,8 @@
             }
           }
         } else {
+          $artist = $_GET['artist'];
           $vlist = 1;
-          $listid = $_GET['albumid'];
           $vadd = 1;
         }           
 
@@ -84,7 +84,7 @@
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="profile.php?user='.$Username.'">Profiles<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:blue;" href="profile.php?user='.$Username.'">Profiles<span class="sr-only">(current)</span></a>';
 
              ?>
              
@@ -93,7 +93,7 @@
           <li class="nav-item active">
                         <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="following.php?user='.$Username.'">Following<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:red;" href="following.php?user='.$Username.'">Following<span class="sr-only">(current)</span></a>';
 
              ?>
              <!-- 
@@ -102,40 +102,36 @@
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="followee.php?user='.$Username.'">Follower<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:green;" href="followee.php?user='.$Username.'">Follower<span class="sr-only">(current)</span></a>';
 
              ?>
           </li>
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="likes.php?user='.$Username.'">Artists<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:yellow;" href="likes.php?user='.$Username.'">Likes<span class="sr-only">(current)</span></a>';
 
              ?>
           </li>
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="playlist.php?user='.$Username.'">Playlists<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:grey;" href="playlist.php?user='.$Username.'">Playlists<span class="sr-only">(current)</span></a>';
 
              ?>
           </li>
-          <!-- <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Playlists</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
-        </ul> -->
       </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+
+      <form class="form-inline my-2 my-lg-0" action="./search.php" method="get">';
+          <?php
+          echo '<input type="hidden" name="user" value="'.$Username.'">';
+          ?>
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" name="searchKey" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>
     </nav>
+
 
 
     
@@ -145,6 +141,7 @@
            <div class="row user-menu-container square">
           <div class="row coralbg white">
                 <div class="col-md-6 no-pad">
+
                     <div class="user-pad">
                         <h3>
                           <?php
@@ -160,16 +157,14 @@
                                 $cid=$row["ptitle"];
                               }
                             } else {
-                              $sql1 = "SELECT atitle FROM album WHERE albumID='$listid'";
-                              $result1 = $conn->query($sql1);
-                              while($row=mysqli_fetch_array($result1)){
-                                $cid=$row["atitle"];
-                              }
+                              $cid = $artist;
                             }
                             echo $cid;
                           ?>
                         </h3>
                     </div>
+
+
                     <div class="user-pad">
                           <?php
                             include 'databases.php';
@@ -184,15 +179,18 @@
                                 $cid=$row["num"];
                               }
                             } else {
-                              $sql1 = "SELECT count(*) as num FROM albumtrack WHERE albumID='$listid'";
+                              $sql1 = "SELECT count(*) as count
+                                       From track,artist
+                                       WHERE artist.aname = '$artist' and artist.artistID=track.artistID";
                               $result1 = $conn->query($sql1);
                               while($row=mysqli_fetch_array($result1)){
-                                $cid=$row["num"];
+                                $cid=$row["count"];
                               }
                             }
                             echo "Number of tracks:".$cid;
                           ?>
                     </div>
+
                     <div class="user-pad">
                           <?php
                             include 'databases.php';
@@ -206,17 +204,23 @@
                               while($row=mysqli_fetch_array($result1)){
                                 $cid=$row["ReleaseDate"];
                               }
+                              echo "Release Date:".$cid;
                             } else {
-                              $sql1 = "SELECT IssueDate FROM album WHERE albumID='$listid'";
+                              $sql1 = "SELECT description
+                                       From artist
+                                       WHERE aname='$artist'";
                               $result1 = $conn->query($sql1);
                               while($row=mysqli_fetch_array($result1)){
-                                $cid=$row["IssueDate"];
+                                $cid=$row["description"];
                               }
+                              echo "Description:".$cid;
                             }
-                            echo "ReleaseDate:".$cid;
+                            
                           ?>
                     </div>
+
                     </div>
+
                 <div class="col-md-6 no-pad">
                     <div class="user-image">
                         <img src="https://farm7.staticflickr.com/6163/6195546981_200e87ddaf_b.jpg" class="img-responsive thumbnail">
@@ -230,12 +234,7 @@
     <?php
       if ($vdelete == 1) {
         echo'<form action="myplaylist.php?user='.$Username.'&playlistid='.$listid.'" method="post">'; 
-      } elseif ($vlist == 0){
-        echo'<form action="addtoplaylist.php?user='.$Username.'&playlistid='.$listid.'" method="post">';
-      } else {
-        echo'<form action="addtoplaylist.php?user='.$Username.'&albumid='.$listid.'" method="post">';
       }
-    
     ?>
 
     <div class="chk-all">
@@ -245,8 +244,6 @@
           <?php
             if ($vdelete == 1) {
               echo '<button type="submit" class="btn btn-danger" style="visibility: hidden;" id="unfollowAll" name="delform" value="Unfollow Checked">Delete selected</button>';
-            } else {
-              echo '<button type="submit" class="btn btn-danger" style="visibility: hidden;" id="unfollowAll1" name="addform" value="Unfollow Checked">Add all to my playlist</button>';
             }
           ?>     
             </div>
@@ -286,8 +283,8 @@
                                     $result1 = $conn->query($sql1);
                                   } else {
                                     $sql1 = "SELECT track.Ttitle, track.duration, track.genre, track.TrackID
-                                             FROM track,albumtrack
-                                             WHERE albumtrack.albumID='$listid' and track.TrackID=albumtrack.trackID";
+                                             FROM track,artist
+                                             WHERE track.artistID=artist.artistID and artist.aname = '$artist'";
                                     $result1 = $conn->query($sql1);
                                   }
                                   $numrow = 1;
@@ -304,10 +301,7 @@
                                       <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
                                    
                                       <td>
-                                      <a href="play.php?user='.$Username.'&trackid='.$row["TrackID"].'"><button type="button" class="btn btn-warning">Play</button></a>';
-                                    if ($vadd == 1) {
-                                      echo '<a href="add.php?user='.$Username.'&trackid='.$row["TrackID"].'"><button type="button" class="btn btn-warning">Add</button></a>';
-                                    }
+                                      <a href="trackprofile.php?user='.$Username.'&track='.$row["TrackID"].'"><button type="button" class="btn btn-warning">Play</button></a>';
                                     if ($vdelete == 1) {
                                       echo '<a href="myplaylist.php?user='.$Username.'&delete='.$row["TrackID"].'&playlistid='.$listid.'"><button type="button" class="btn btn-danger">Delete</button></a>';
                                     }

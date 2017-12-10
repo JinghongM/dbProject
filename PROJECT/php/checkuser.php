@@ -29,7 +29,6 @@ if(isset($_POST['submit'])){
 
 	$Username = $_POST["username"];
 	$Password = $_POST["password"];
-
     $sql1 = "SELECT Username, Password
 	         From user
 	         WHERE Username = '$Username'";
@@ -44,14 +43,27 @@ if(isset($_POST['submit'])){
 	}
 	else
 	{
-		$sql2 = "SELECT Username, Password
-	         From user
-	         WHERE Username = '$Username' and Password = '$Password';";
-		$result2 = $conn->query($sql2);
+		while($row = mysqli_fetch_array($result1))
+		{
+			if(password_verify($Password, $row["Password"]))
+			{
+				echo "<script type='text/javascript'> 
+		           window.location.href='../welcome.php?user=$Username'
+		      	  </script>";
+			}
+			else
+			{
+
+			$issue = 1;
+			echo "<script type='text/javascript'> 
+		           window.location.href='../login.php?issue=$issue '
+		      	  </script>";
+			}
+		}
+		/*$result2 = $conn->query($sql2);
 		if($result2->num_rows ==0)
 		{
 			$issue = 1;
-			echo "!!!";
 			echo "<script type='text/javascript'> 
 		           window.location.href='../login.php?issue=$issue '
 		      	  </script>";
@@ -62,10 +74,10 @@ if(isset($_POST['submit'])){
 		           window.location.href='../welcome.php?user=$Username'
 		      	  </script>";
 
-		}
+		}*/
 
 	}
-} else {echo "no";}
+} /*else {echo "no";}*/
 ?>
   </body>
 </html>
