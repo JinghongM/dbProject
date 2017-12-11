@@ -107,6 +107,24 @@
                           include "databases.php";
                           $dbConnected = @mysqli_connect($servername,$username,$password);
                           $dbSelected = @mysqli_select_db($dbConnected,$dbname);
+                          /*ADDDDDD*/
+                          if(isset($_GET["fo"]))
+                          {
+                           $sql0 =  "INSERT INTO `follows` (`follower`, `followee`, `timestamp`) VALUES ('".$_GET["user"]."', '".$_GET["fo"]."', CURRENT_TIME())";
+                           $result0=mysqli_query($dbConnected,$sql0);
+                           if($result0)
+                           {
+                             echo '<script type="text/javascript">
+                              alert("Follow Success!");
+                              </script>';
+                           }
+                           else
+                           {
+                             echo '<script type="text/javascript">
+                              alert("The user has already in your following list!");
+                              </script>';
+                           }
+                          }
                           $sql1 = "SELECT city
                                   From user
                                   WHERE Username = '$checkName'";
@@ -153,6 +171,13 @@
                           if(! isset($_GET["guest"]))
                           {
                             echo '<button type="button" class="btn btn-info" onclick="openWindow()">Update</button>';
+                          }
+                          /*ADDDDD*/
+                          else
+                          {
+                            echo '<a href="./profile.php?user='.$_GET["user"].'&fo='.$_GET["guest"].'&guest='.$_GET["guest"].'"><button type="button" class="btn btn-info" >Follow</button></a>';
+
+                          
                           }
             ?>
             <script type="text/javascript">

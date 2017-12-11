@@ -257,13 +257,15 @@
     <?php
     if ($vdel == 1) {
           echo'<form action="playlist.php?user='.$Username.'" method="post">'; 
-        } 
-    ?>
 
-    <div class="chk-all">
-      <input type="checkbox" id="checkAll" />
-        <div class="btn-group">
-          <a data-toggle="dropdown"  class="btn mini all" aria-expanded="false" id="checkAll">All</a>
+
+    echo '<div class="chk-all">
+      <input type="checkbox" id="checkAll" />';
+             
+     echo '<div class="btn-group">
+          <a data-toggle="dropdown"  class="btn mini all" aria-expanded="false" id="checkAll">All</a>';
+           } 
+    ?>
           <?php
           if ($vdel == 1) {
           echo'<button type="submit" class="btn btn-danger" style="visibility: hidden;" name="submit" id="unfollowAll">Delete Checked</button>';
@@ -313,6 +315,19 @@
                                   $numrow = 1;
                                   while($row = $result1->fetch_assoc())
                                   {
+                                  	if(isset($_GET['guest']))
+                                    {
+                                      echo '<tr>
+                                      <td class="inbox-small-cells">
+                                      </td>
+                                      <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
+
+                                      <td class="view-message  dont-show"><a href="profile.php?user='.$Username.'&playlistid='.$row["playlistid"].'">'.$row["ptitle"].'</a></td>
+                                      <td class="view-message  text-right">'.$row["releasedate"].'</td>
+                                      <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
+                                          </tr>';
+                                        }
+                                        else{
                                     echo '<tr>
                                       <td class="inbox-small-cells">
                                         <input name="selector[]" type="checkbox" class="mail-checkbox" value="'.$row["playlistid"].'" />
@@ -322,6 +337,7 @@
                                       <td class="view-message  text-right">'.$row["releasedate"].'</td>
                                       <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
                                       <td>';
+                                  }
                                       if ($vdel==1){
                                         echo '<a href="playlist.php?user='.$Username.'&delete='.$row["playlistid"].'"><button type="button" class="btn btn-danger">Delete</button></a></td>';
                                       }
