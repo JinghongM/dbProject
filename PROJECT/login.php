@@ -19,7 +19,7 @@
     echo '<div class="alert-messages " id="message-drawer" style="top: 46px;">
         <div class="message ">
           <div class="message-inside">  
-              "The username and password you entered did not match our records. Please double-check and try again."
+              "The username and password you entered are invalid or did not match our records. Please double-check and try again."
             <a role="botton" class="Icon Icon--close Icon--medium dismiss" id="close">
               <script type="text/javascript">
                 document.getElementById("close").onclick = function()
@@ -67,9 +67,7 @@
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="Password" name='password' required>
         <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
+
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" value="submit">Log in</button>
         <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" onclick="openWindow()">Sign Up</button>

@@ -156,7 +156,11 @@
                                 $cid=$row["atitle"];
                               }
                             } else {
-                              $cid = $artist;
+                              $sql1 = "SELECT aname FROM artist WHERE artistID='$artist'";
+                              $result1 = $conn->query($sql1);
+                              while($row=mysqli_fetch_array($result1)){
+                                $cid=$row["aname"];
+                              }
                             }
                             echo $cid;
                           ?>
@@ -186,7 +190,7 @@
                             } else {
                               $sql1 = "SELECT count(*) as count
                                        From track,artist
-                                       WHERE artist.aname = '$artist' and artist.artistID=track.artistID";
+                                       WHERE artist.artistID = '$artist' and artist.artistID=track.artistID";
                               $result1 = $conn->query($sql1);
                               while($row=mysqli_fetch_array($result1)){
                                 $cid=$row["count"];
@@ -220,7 +224,7 @@
                             } else {
                               $sql1 = "SELECT description
                                        From artist
-                                       WHERE aname='$artist'";
+                                       WHERE artistID='$artist'";
                               $result1 = $conn->query($sql1);
                               while($row=mysqli_fetch_array($result1)){
                                 $cid=$row["description"];
@@ -235,7 +239,18 @@
 
                 <div class="col-md-6 no-pad">
                     <div class="user-image">
-                        <img src="./images/album.jpg" class="img-responsive thumbnail">
+                      <?php
+                      if($vlist==2)
+                      { 
+                        echo "<img src='./images/musician.jpg' class='img-responsive thumbnail'>";
+                      } 
+                      else
+                      {
+                        echo "<img src='./images/album.jpg' class='img-responsive thumbnail'>";
+                      }
+                       ?>
+                      
+                        
                     </div>
                 </div>
             </div>
@@ -301,7 +316,7 @@
                                   } else {
                                     $sql1 = "SELECT track.Ttitle, track.duration, track.genre, track.TrackID
                                              FROM track,artist
-                                             WHERE track.artistID=artist.artistID and artist.aname = '$artist'";
+                                             WHERE track.artistID=artist.artistID and artist.artistID = '$artist'";
                                     $result1 = $conn->query($sql1);
                                   }
                                   $numrow = 1;

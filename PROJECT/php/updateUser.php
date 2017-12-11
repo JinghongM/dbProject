@@ -45,7 +45,7 @@ if(isset($_POST['submit'])){
 		$sqlForPass = "UPDATE `user` SET `password`='$PASSWORD' WHERE username='$USERNAME'";
 		$resultForPass = $conn->query($sqlForPass);
 	}
-	echo "<script type='text/javascript'> window.location.href='../updateprofile.php?user=$USERNAME'</script>";
+	echo "<script type='text/javascript'> window.location.href='../profile.php?user=$USERNAME'</script>";
 }
 
 

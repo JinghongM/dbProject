@@ -70,7 +70,7 @@
             </div>
 
             <div class="form-group">
-              <label for="username" class="cols-sm-2 control-label">Username</label>
+              <label for="username" class="cols-sm-2 control-label">Username(alphabet and digit only)</label>
               <div class="cols-sm-10">
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
@@ -80,7 +80,7 @@
             </div>
 
             <div class="form-group">
-              <label for="password" class="cols-sm-2 control-label">Password</label>
+              <label for="password" class="cols-sm-2 control-label">Password(alphabet and digit only)</label>
               <div class="cols-sm-10">
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>

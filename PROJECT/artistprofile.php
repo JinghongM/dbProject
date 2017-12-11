@@ -13,7 +13,7 @@
 
 </head>
 <body>
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
      <?php
         $Username = $_GET["user"];
         echo '<a class="navbar-brand" href="welcome.php?user='.$Username.'">Spotify</a>';
@@ -27,7 +27,7 @@
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="profile.php?user='.$Username.'">Profiles<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:blue;" href="profile.php?user='.$Username.'">Profiles<span class="sr-only">(current)</span></a>';
 
              ?>
              
@@ -36,7 +36,7 @@
           <li class="nav-item active">
                         <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="following.php?user='.$Username.'">Following<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:red;" href="following.php?user='.$Username.'">Following<span class="sr-only">(current)</span></a>';
 
              ?>
              <!-- 
@@ -45,26 +45,27 @@
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="followee.php?user='.$Username.'">Follower<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:green;" href="followee.php?user='.$Username.'">Follower<span class="sr-only">(current)</span></a>';
 
              ?>
           </li>
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="likes.php?user='.$Username.'">Artists<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:yellow;" href="likes.php?user='.$Username.'">Likes<span class="sr-only">(current)</span></a>';
 
              ?>
           </li>
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="playlist.php?user='.$Username.'">Playlists<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:grey;" href="playlist.php?user='.$Username.'">Playlists<span class="sr-only">(current)</span></a>';
 
              ?>
           </li>
       </ul>
-<form class="form-inline my-2 my-lg-0" action="./search.php" method="get">';
+
+      <form class="form-inline my-2 my-lg-0" action="./search.php" method="get">';
           <?php
           echo '<input type="hidden" name="user" value="'.$Username.'">';
           ?>
@@ -161,7 +162,7 @@
                       echo '<a href="./myplaylist.php?user='.$Username.'&artist='.$_GET["artist"].'">';
                       $sql2 = "SELECT count(*) as count
                                   From track,artist
-                                  WHERE artist.aname = '$checkName' and artist.artistID=track.artistID";
+                                  WHERE artist.artistID = '".$_GET["artist"]."' and artist.artistID=track.artistID";
                           $result2=mysqli_query($dbConnected,$sql2);
                           $trackNumber = 0;
                           while($row=mysqli_fetch_array($result2)){
