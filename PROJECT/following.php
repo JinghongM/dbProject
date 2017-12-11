@@ -220,16 +220,20 @@
         </div>
                 
       </div>
-    <?php echo'<form action="following.php?user='.$Username.'" method="post">'; ?>
-
-    <div class="chk-all">
+    <?php echo'<form action="./following.php?user='.$Username.'" method="post">';
+     if(!isset($_GET['guest'])){
+    echo '<div class="chk-all">
       <input type="checkbox" id="checkAll" />
-        <div class="btn-group">
-          <a data-toggle="dropdown"  class="btn mini all" aria-expanded="false" id="checkAll">All</a>
+        <div class="btn-group">';
+}
 
+             if(! isset($_GET['guest']))
+             {
+            echo '<a data-toggle="dropdown"  class="btn mini all" aria-expanded="false" id="checkAll">All</a>
 
-          <button type="submit" class="btn btn-danger" style="visibility: hidden;" id="unfollowAll" name="submit" value="Unfollow Checked">Unfollow Checked</button>
-
+            <button type="submit" class="btn btn-danger" style="visibility: hidden;" id="unfollowAll" name="submit" value="Unfollow Checked">Unfollow selected</button>';
+            }
+  ?>
 
             </div>
                              </div>
@@ -255,6 +259,23 @@
                                   $numrow = 1;
                                   while($row = $result1->fetch_assoc())
                                   {
+                                    if(isset($_GET['guest']))
+                                    {
+                                      echo '<tr>
+                                      <td class="inbox-small-cells">
+                                      </td>
+                                      <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
+
+                                      <td class="view-message  dont-show"><a href="profile.php?user='.$Username.'&guest='.$row["Username"].'">'.$row["Username"].'</a></td>
+                                      <td class="view-message  text-right">'.$row["city"].'</td>
+                                      <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
+                                      <td class="view-message ">'.$row["timestamp"].'</td>
+
+
+                                          </tr>';
+                                        }
+                                        else{
+                                    
                                     echo '<tr>
                                       <td class="inbox-small-cells">
                                         <input name="selector[]" type="checkbox" class="mail-checkbox" value="'.$row["Username"].'" />
@@ -269,6 +290,7 @@
                                       <td><a href="following.php?user='.$Username.'&unfo='.$row["Username"].'"><button type="button" class="btn btn-danger">Unfollow</button></a></td>
 
                                           </tr>';
+                                        }
                                    $numrow++;
                                  }
                               ?>

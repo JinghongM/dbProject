@@ -29,6 +29,13 @@ if(isset($_POST['submit'])){
 
 	$Username = $_POST["username"];
 	$Password = $_POST["password"];
+	if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $Username) or preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $Password))
+	{
+		$issue = 1;
+		echo "<script type='text/javascript'> 
+		       window.location.href='../login.php?issue=$issue '
+		      </script>";
+	}
     $sql1 = "SELECT Username, Password
 	         From user
 	         WHERE Username = '$Username'";

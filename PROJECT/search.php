@@ -289,6 +289,14 @@
                             <tbody>
                              <?php 
                              $searchKey = $_GET["searchKey"];
+                            if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $searchKey))
+                                    {
+                                      echo '<script type="text/javascript"> 
+                                             alert("Invalid search!");
+                                              window.location.href="./welcome.php?user='.$Username.'";
+
+                                            </script>';
+                                    }
                              include 'databases.php';
                              $conn = new mysqli($servername, $username, $password, $dbname);
                              $sql1 = "SELECT user.Username, user.city

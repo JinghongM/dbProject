@@ -21,23 +21,28 @@
     <script src="./jquery/jquery.min.js"></script> 
 </head>
 <body>
+  1234432
   <?php
 
-							include './databases.php';
+							               include './databases.php';
                              if(isset($_GET['guest'])) {
                               $checkname = $_GET['guest'];
                               $vdel = 0;
-                             } else {
+                             } 
+                             else {
                               $checkname = $_GET['user'];
                               $vdel = 1;
                             }
+                            $notadd = 0;
+                            echo "notadd=".$notadd;
 
-                            if(isset($_POST['add'])) {
+                            if(isset($_POST['add'])) 
+                            {
                             $title = $_POST['title'];
                             $authorization = $_POST['authorization'];
                             $Username = $_GET["user"];
                             $notadd = 0;
-                            
+                            echo "notadd=".$notadd;
                             $conn = new mysqli($servername, $username, $password, $dbname);
                             $sql1 = "SELECT playlistID FROM playlist WHERE ptitle='$title'";
                             echo $sql1;
@@ -48,9 +53,17 @@
                             } 
                             echo $notadd;
                             if ($notadd == 0) {
+                                if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $title))
+                                    {
+                                      echo '<script type="text/javascript"> 
+                                             alert("Invalid Playlist Name!");
+                                            </script>';
+                                    }
+                                    else
+                                    {
                               $sql2 = "INSERT INTO `playlist` (`playlistID`, `ptitle`, `ReleaseDate`, `Username`, `authorization`) VALUES (NULL, '$title', CURRENT_DATE(), '$Username', '$authorization')";
-                              echo $sql2;
                               $conn->query($sql2);
+                                    }
                             } else {
                               echo '<script type="text/javascript">
                               alert("playlist exist!");</script>';

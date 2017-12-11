@@ -20,14 +20,11 @@
     </style>
     <script src="./jquery/jquery.min.js"></script> 
 </head>
-<body>
-  <?php
-$checkname = $_GET['user'];                               
-?>
-
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
      <?php
         $Username = $_GET["user"];
+        $checkname=$Username;
         echo '<a class="navbar-brand" href="welcome.php?user='.$Username.'">Spotify</a>';
       ?>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +36,8 @@ $checkname = $_GET['user'];
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="profile.php?user='.$Username.'">Profiles<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:blue;" href="profile.php?user='.$Username.'">Profiles<span class="sr-only">(current)</span></a>';
+
              ?>
              
 <!--             <a class="nav-link" href="profile.php">Profiles<span class="sr-only">(current)</span></a>
@@ -47,7 +45,8 @@ $checkname = $_GET['user'];
           <li class="nav-item active">
                         <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="following.php?user='.$Username.'">Following<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:red;" href="following.php?user='.$Username.'">Following<span class="sr-only">(current)</span></a>';
+
              ?>
              <!-- 
             <a class="nav-link" href="Follows.html">Following<span class="sr-only">(current)</span></a> -->
@@ -55,33 +54,31 @@ $checkname = $_GET['user'];
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="followee.php?user='.$Username.'">Follower<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:green;" href="followee.php?user='.$Username.'">Follower<span class="sr-only">(current)</span></a>';
+
              ?>
           </li>
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="likes.php?user='.$Username.'">Artists<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:yellow;" href="likes.php?user='.$Username.'">Likes<span class="sr-only">(current)</span></a>';
+
              ?>
           </li>
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="playlist.php?user='.$Username.'">Playlists<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:grey;" href="playlist.php?user='.$Username.'">Playlists<span class="sr-only">(current)</span></a>';
+
              ?>
           </li>
-          <!-- <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Playlists</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
-        </ul> -->
       </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+
+      <form class="form-inline my-2 my-lg-0" action="./search.php" method="get">';
+          <?php
+          echo '<input type="hidden" name="user" value="'.$Username.'">';
+          ?>
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" name="searchKey" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>
@@ -213,7 +210,7 @@ $checkname = $_GET['user'];
                                   $conn = new mysqli($servername, $username, $password, $dbname);
                                   $sql1 = "SELECT album.albumID,album.atitle,album.IssueDate
                                            FROM album
-                                           ORDER BY IssueDate DESC";
+                                           ORDER BY IssueDate DESC LIMIT 50";
 
                                   
                                   $result1 = $conn->query($sql1);

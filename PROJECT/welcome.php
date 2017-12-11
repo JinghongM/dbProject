@@ -294,17 +294,19 @@
  				</script>
  				<p></p>
             <p>
-            	<a class="btn btn-secondary" href="#" role="button">View details &raquo;</a>
+              <?php
+
+              echo '<a class="btn btn-secondary" href="./releaseplaylist.php?user='.$_GET["user"].'" role="button">View details &raquo;</a>';
+              ?>
             </p>
           </div>
           <div class="col-md-4">
-            <h5>New Releases from your likes artists</h5>
+            <h5>New Releases Album</h5>
 				<div id="like-table" class="overflow">
             	<table class="table table-dark"  id="like-table">
 				  <thead>
 				    <tr>
 				      <th scope="col">#</th>
-				      <th scope="col">Artst</th>
 				      <th scope="col">Album</th>
 				      <th scope="col">Issuedate</th>
 				    </tr>
@@ -312,18 +314,18 @@
 				  <tbody>
 				    <tr>
              <?php 
-
-                         $sql2 = "SELECT DISTINCT artist.aname, album.atitle, album.issueDate FROM likes,artist,track,albumtrack,album WHERE artist.artistID=likes.artistID AND track.artistID=artist.artistID AND albumtrack.trackID=track.trackID AND album.albumID=albumtrack.albumID AND likes.username='$Username' ORDER BY album.issueDate DESC LIMIT 10";
+                $sql2 = "SELECT album.albumID,album.atitle,album.IssueDate
+                                           FROM album
+                                           ORDER BY IssueDate DESC LIMIT 10";
+                         
                          $result2 = $conn->query($sql2);
                          $numrow = 1;
                          while($row = $result2->fetch_assoc())
                          {
-                              echo $row["artist"];
                               echo '<tr>
                                             <th scope="row">'.$numrow.'</th>
-                                            <td>'.$row["aname"].'</td>
                                             <td>'.$row["atitle"].'</td>
-                                            <td>'.$row["issueDate"].'</td>
+                                            <td>'.$row["IssueDate"].'</td>
                                     </tr>';
                               $numrow++;
                          }
@@ -363,7 +365,10 @@
 					});
  				</script>
  				<p></p>
-            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+        <?php
+
+              echo '<a class="btn btn-secondary" href="./newalbumplaylist.php?user='.$_GET["user"].'" role="button">View details &raquo;</a>';
+              ?>
           </div>
           <div class="col-md-4">
             <h5>Your recently listening Tracks</h5>
@@ -426,7 +431,11 @@
 					});
  				</script>
             <p></p>
-            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+            <p>
+              <?php
+
+              echo '<a class="btn btn-secondary" href="./recentmyplaylist.php?user='.$_GET["user"].'" role="button">View details &raquo;</a>';
+              ?>
           </div>
         </div>
 

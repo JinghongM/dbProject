@@ -37,7 +37,7 @@
     return true;
 }
 </script> 
-          <form class="form_class" id="form" method="post" action="./checkuser.php" onsubmit="return checkForm()">
+          <form class="form_class" id="form" method="post" action="./php/signupuser.php" onsubmit="return checkForm()">
             
             <div class="form-group">
               <label for="name" class="cols-sm-2 control-label">Your Name</label>

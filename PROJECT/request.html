@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+ <form>
+<input type="submit" onclick="myFunction()">
+</form>
+<script type="text/javascript">
+	function myFunction() {
+        var jqXHR = $.ajax({ 
+            type:'post'
+            , url:<https://accounts.spotify.com/api/token>
+            , headers: { 
+                'Authorization': 'Basic <base64 coded client_id:cb99d96db62a4f0da0549a1c9bfd9571>'
+                            }
+            , data: {
+                'grant_type': 'AQCcXvSOiHPeXObk6Iomu0H8khpam-EUTCQenBha8xt-pT7518xbdxJ8ywwmenmIjABAfOGH3ZXBRpGrYpUmkr1StdbK9YIzpYGZEMa1bkn2CrpzuVc46vIgkkM-lHLvxe079jEN2sx7Bh3JxUKAkY14NDjEjphWRnTJ00m9Z48v8EaqjyE6U6MCJp7EujGx_M5-Iu9UCqON45GJmI2fVvptFtTdeKd9_uFLRS5kfDH7nTxVed1NqyZba0mD',
+                'code':'AQCcXvSOiHPeXObk6Iomu0H8khpam-EUTCQenBha8xt-pT7518xbdxJ8ywwmenmIjABAfOGH3ZXBRpGrYpUmkr1StdbK9YIzpYGZEMa1bkn2CrpzuVc46vIgkkM-lHLvxe079jEN2sx7Bh3JxUKAkY14NDjEjphWRnTJ00m9Z48v8EaqjyE6U6MCJp7EujGx_M5-Iu9UCqON45GJmI2fVvptFtTdeKd9_uFLRS5kfDH7nTxVed1NqyZba0mD'
+                ,
+                'redirect_uri':'http://localhost/dbproject-master/dbProject-master/PROJECT/request.html'
+            }
+        })
+        
+      }
+
+</script>
+</body>
+</html>

@@ -323,6 +323,10 @@
              ?>';
             if(i=="SUCCESS")
             { 
+            	var opened = window.open("https://open.spotify.com/embed?uri=spotify:user:spotify:playlist:3rgsDhGHZxZ9sB9DQWQfuf");
+
+            	 
+
               $('#contactForm').fadeToggle();
               };
             } ;

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link rel="stylesheet" href="css/following.css">
+    <link rel="stylesheet" href="./css/popup.css">
     <style type="text/css">
       body, html{
      height: 100%;
@@ -18,21 +19,13 @@
 }
     </style>
     <script src="./jquery/jquery.min.js"></script> 
-
 </head>
-<body>
-  <?php  
-        include 'databases.php';
-
-        $vdelete = 0;
-        $Username = $_GET['user'];
-        $checkname = $_GET['user']; 
-
-?>
-
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
      <?php
         $Username = $_GET["user"];
+        $checkname=$Username;
+
         echo '<a class="navbar-brand" href="welcome.php?user='.$Username.'">Spotify</a>';
       ?>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,16 +37,16 @@
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="profile.php?user='.$Username.'">Profiles<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:blue;" href="profile.php?user='.$Username.'">Profiles<span class="sr-only">(current)</span></a>';
 
              ?>
              
 <!--             <a class="nav-link" href="profile.php">Profiles<span class="sr-only">(current)</span></a>
  -->       </li>
           <li class="nav-item active">
-                        <?php
+            <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="following.php?user='.$Username.'">Following<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:red;" href="following.php?user='.$Username.'">Following<span class="sr-only">(current)</span></a>';
 
              ?>
              <!-- 
@@ -62,36 +55,31 @@
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="followee.php?user='.$Username.'">Follower<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:green;" href="followee.php?user='.$Username.'">Follower<span class="sr-only">(current)</span></a>';
 
              ?>
           </li>
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="likes.php?user='.$Username.'">Artists<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:yellow;" href="likes.php?user='.$Username.'">Likes<span class="sr-only">(current)</span></a>';
 
              ?>
           </li>
           <li class="nav-item active">
             <?php
              $Username = $_GET["user"];
-             echo '<a class="nav-link" href="playlist.php?user='.$Username.'">Playlists<span class="sr-only">(current)</span></a>';
+             echo '<a class="nav-link" style="color:grey;" href="playlist.php?user='.$Username.'">Playlists<span class="sr-only">(current)</span></a>';
 
              ?>
           </li>
-          <!-- <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Playlists</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
-        </ul> -->
       </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+
+      <form class="form-inline my-2 my-lg-0" action="./search.php" method="get">';
+          <?php
+          echo '<input type="hidden" name="user" value="'.$Username.'">';
+          ?>
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" name="searchKey" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>
@@ -227,7 +215,7 @@
                                             WHERE user.Username=plays.username and plays.trackid=track.TrackID and track.artistID=artist.artistID
                                             AND user.Username='$Username'
                                             ORDER BY timestamp DESC 
-                                            LIMIT 10";
+                                            LIMIT 50";
                                   $numrow = 1;
                                   $result1 = $conn->query($sql1);
                                   while($row = $result1->fetch_assoc())
@@ -240,7 +228,7 @@
                                       <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
                                    
                                       <td>
-                                      <a href="trackprofile.php?user='.$Username.'&track='.$row["TrackID"].'"><button type="button" class="btn btn-warning">Play</button></a>
+                                      <a href="trackprofile.php?user='.$Username.'&track='.$row["trackID"].'"><button type="button" class="btn btn-warning">Play</button></a>
                                     </td></tr>';
                                    $numrow++;
                                  }
